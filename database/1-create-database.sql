@@ -1,26 +1,34 @@
-create database hotel;
+
+
+DROP TABLE guest;
+DROP TABLE booking;
 
 use hotel;
 
-create table Guests (
+CREATE TABLE booking (
 
-Id INT AUTO_INCREMENT,
-Name VARCHAR(50)NOT NULL,
-Lastname VARCHAR(100)NOT NULL,
-Birthdate DATE,
-Nationality VARCHAR(50),
-(Telephone VARCHAR(15), CONSTRAINT chk_telephone CHECK (Telephone REGEXP '^[0-9]{10}$'))
-PRIMARY KEY(Id)
+	id INT AUTO_INCREMENT,
+	entry_date DATE,
+	departure_date DATE,
+	price DOUBLE(50),
+	method_payment VARCHAR(20),
+	PRIMARY KEY(id)
 )Engine=InnoDB;
 
-use hotel;
+CREATE TABLE guest (
 
-create table Bookings (
-
-Id INT AUTO_INCREMENT,
-Entry_date DATE,
-Departure_date DATE,
-Valor,
-Method_payment
+	id INT AUTO_INCREMENT,
+	name VARCHAR(50)NOT NULL,
+	lastname VARCHAR(100)NOT NULL,
+	birthdate DATE,
+	nationality VARCHAR(50),
+	(telephone VARCHAR(15), CONSTRAINT chk_telephone CHECK (telephone REGEXP '^[0-9]{10}$'))
+	id_booking INT,
+	FOREIGN KEY(id_booking)REFERENCES Booking(id)
+	PRIMARY KEY(id)
 )Engine=InnoDB;
+
+
+
+
 
