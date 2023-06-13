@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import database.DbLogin;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,6 +32,7 @@ public class Login extends JFrame {
 	private JPasswordField txtContrasena;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	private DbLogin dbLogin;
 
 	/**
 	 * Launch the application.
@@ -50,6 +54,9 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		
+		dbLogin = new DbLogin();
+		
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -192,7 +199,7 @@ public class Login extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Login();
+				executeLogin();
 			}
 		});
 		btnLogin.setBackground(SystemColor.textHighlight);
@@ -234,28 +241,37 @@ public class Login extends JFrame {
 		header.setLayout(null);
 	}
 	
-	private void Login() {
-		 String Usuario= "admin";
-	     String Contraseña="admin";
+	private void executeLogin() {
+		
+		String usuario= "admin";
+		
+		String contrasena="admin";
+	
+	    String contrase=new String(txtContrasena.getPassword());
+	
+	    if(dbLogin.esIgual(txtUsuario.getText(), contrase)){
+	        MenuUsuario menu = new MenuUsuario();
+	        menu.setVisible(true);
+	        dispose();	 
+	    }else {
+	        JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+	    }
+	}
+	
+	private void headerMousePressed(java.awt.event.MouseEvent evt) {
+		 
+	    xMouse = evt.getX();
+	    
+	    yMouse = evt.getY();
+	        
+	}//GEN-LAST:event_headerMousePressed
 
-	        String contrase=new String (txtContrasena.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
-	            MenuUsuario menu = new MenuUsuario();
-	            menu.setVisible(true);
-	            dispose();	 
-	        }else {
-	            JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
-	        }
-	} 
-	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
-	        xMouse = evt.getX();
-	        yMouse = evt.getY();
-	    }//GEN-LAST:event_headerMousePressed
-
-	    private void headerMouseDragged(java.awt.event.MouseEvent evt) {
-	        int x = evt.getXOnScreen();
-	        int y = evt.getYOnScreen();
-	        this.setLocation(x - xMouse, y - yMouse);
-}
+	private void headerMouseDragged(java.awt.event.MouseEvent evt) {
+	    	
+        int x = evt.getXOnScreen();
+        
+        int y = evt.getYOnScreen();
+        
+        this.setLocation(x - xMouse, y - yMouse);
+	}
 }
