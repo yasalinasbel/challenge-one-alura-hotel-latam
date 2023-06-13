@@ -29,4 +29,12 @@ CREATE TABLE guest (
 	PRIMARY KEY(id)
 )Engine=InnoDB;
 
+CREATE TABLE users (
+
+	id INT AUTO_INCREMENT,
+	login VARCHAR(50),
+	password VARCHAR(50)
+	PRIMARY KEY(id)
+)Engine=InnoDB;
+
 
