@@ -242,7 +242,6 @@ public class Login extends JFrame {
 	}
 	
 	private void executeLogin() {
-	
 	    String passw=new String(txtContrasena.getPassword());
 	
 	    if(dbLogin.loginUser(txtUsuario.getText(), passw)){
@@ -250,7 +249,7 @@ public class Login extends JFrame {
 	        menu.setVisible(true);
 	        dispose();	 
 	    }else {
-	        JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+	        JOptionPane.showMessageDialog(this, "Usuario o Contrase\u00f1a no v\u00e1lidos");
 	    }
 	}
 	
