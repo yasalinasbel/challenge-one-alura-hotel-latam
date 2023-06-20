@@ -1,21 +1,23 @@
 package config;
-import java.io.File;
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.stream.Stream;
+
 
 public class Setting {
 	
-	private Properties properties;
+	private final Properties properties;
+	private static final String CONFIG_PROPERTIES = "config.properties";
 	
 	public Setting() {
 		properties=new Properties();
-		loadProperties("config.properties");
+		loadProperties(CONFIG_PROPERTIES);
 	}
 	private void loadProperties(String filePath) {
-		FileInputStream fileInputStream=null;
+		FileInputStream fileInputStream;
 		
 		try {
 			fileInputStream=new FileInputStream(filePath);

@@ -11,7 +11,6 @@ public class SettingTest {
 	public void loadPropertiesTest() {
 		String dbUrl = setting.getUrl("db_url");
 		Assert.assertNotNull("db_url must be notnull", dbUrl);
-		System.out.println("Setting Test");
 	}
 
 }
