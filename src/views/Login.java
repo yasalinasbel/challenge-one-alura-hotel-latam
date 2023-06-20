@@ -32,7 +32,7 @@ public class Login extends JFrame {
 	private JPasswordField txtContrasena;
 	int xMouse, yMouse;
 	private JLabel labelExit;
-	private DbLogin dbLogin;
+	final DbLogin dbLogin;
 
 	/**
 	 * Launch the application.
@@ -242,14 +242,10 @@ public class Login extends JFrame {
 	}
 	
 	private void executeLogin() {
-		
-		String usuario= "admin";
-		
-		String contrasena="admin";
 	
-	    String contrase=new String(txtContrasena.getPassword());
+	    String passw=new String(txtContrasena.getPassword());
 	
-	    if(dbLogin.esIgual(txtUsuario.getText(), contrase)){
+	    if(dbLogin.loginUser(txtUsuario.getText(), passw)){
 	        MenuUsuario menu = new MenuUsuario();
 	        menu.setVisible(true);
 	        dispose();	 
