@@ -13,7 +13,7 @@ public class ConnectionManagerTest {
 	private ConnectionManager connectionManager = new ConnectionManager();
 
 	@Test
-	public void testConnectionManager() throws SQLException {
+	public void testGetConnection() throws SQLException {
 		Connection connection = connectionManager.restoreConnection();
 		Assert.assertFalse("Connection should be open", connection.isClosed());
 		System.out.println("Test connection manager");

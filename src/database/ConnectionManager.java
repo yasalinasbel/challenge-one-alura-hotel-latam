@@ -8,22 +8,22 @@ import config.Setting;
 
 public class ConnectionManager  {
 	
-	private DataSource datasource;
-	private Setting setting;
-	
+	private final DataSource datasource;
+	private final Setting setting;
+	private static final int MAX_POOL_SIZE=10;
 	
 	public ConnectionManager() {
 		ComboPooledDataSource pooledDataSource = new ComboPooledDataSource();
 		setting=new Setting();
-		pooledDataSource.setJdbcUrl(setting.getUrl("db_url"));
+		pooledDataSource.setJdbcUrl(setting.getProperty("db_url"));
 		pooledDataSource.setUser(System.getenv("USERNAME"));
 		pooledDataSource.setPassword(System.getenv("PASSWORD"));
-		pooledDataSource.setMaxPoolSize(10);
+		pooledDataSource.setMaxPoolSize(MAX_POOL_SIZE);
 		
 		this.datasource=pooledDataSource;
 	}
 	
-	public Connection restoreConnection() {
+	public Connection getConnection() {
 		try {
 			return this.datasource.getConnection();
 		} catch (SQLException e) {
