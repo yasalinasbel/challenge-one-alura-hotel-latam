@@ -2,10 +2,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.junit.jupiter.api.Test;
-
-import config.Setting;
 import junit.framework.Assert;
 
 public class ConnectionManagerTest {
@@ -14,9 +11,10 @@ public class ConnectionManagerTest {
 
 	@Test
 	public void testGetConnection() throws SQLException {
-		Connection connection = connectionManager.restoreConnection();
-		Assert.assertFalse("Connection should be open", connection.isClosed());
-		System.out.println("Test connection manager");
+		Connection connection = connectionManager.getConnection();
+		Assert.assertFalse("Connection should be open", connection.isClosed());		
+		connection.close();
+		Assert.assertTrue("Connection should be closed", connection.isClosed());
 	}
 
 }

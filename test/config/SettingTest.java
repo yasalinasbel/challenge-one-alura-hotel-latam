@@ -9,7 +9,7 @@ public class SettingTest {
 
 	@Test
 	public void loadPropertiesTest() {
-		String dbUrl = setting.getUrl("db_url");
+		String dbUrl = setting.getProperty("db_url");
 		Assert.assertNotNull("db_url must be notnull", dbUrl);
 	}
 
