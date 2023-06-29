@@ -1,7 +1,6 @@
 package database.dao;
 
 import java.sql.SQLException;
-import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -14,10 +13,12 @@ public class UserDataDAOTest {
 	private UserDataDAO userDataDAO = new UserDataDAO();
 
 	@Test
-	public void testgetUserByLogin() throws SQLException {
-		List<UserDataDTO> userByLogin = userDataDAO.getUserByLogin("cbeltran");
+	public void testGetUserByLogin() throws SQLException {
+		UserDataDTO userByLogin = userDataDAO.getUserByLogin("cbeltran");
 		
-		UserDataDTO userData = userByLogin.get(0);	
+		String userData=userByLogin.getLogin();
+
 		Assert.assertNotNull(userData);	
+		
 	}
 }

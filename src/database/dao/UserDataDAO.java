@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import database.ConnectionManager;
 import database.dto.UserDataDTO;
 
 public class UserDataDAO {
 	
 	private Connection con;
+	private static final String SELECT_USER_BY_LOGIN="SELECT id, login, password FROM user_data WHERE login=?";
 	
 	private synchronized Connection getConnection() {
 		if (con == null) {
@@ -29,14 +28,13 @@ public class UserDataDAO {
 		return con;
 	}
 	
-	public List<UserDataDTO> getUserByLogin(String login){
+	public UserDataDTO getUserByLogin(String login){
 		
-		List<UserDataDTO> userPassword=new ArrayList<>();
+		UserDataDTO userDataDTO = null;
 		Connection con= getConnection();
 		
 		try {
-			String querySelect="SELECT id, login, password FROM user_data WHERE login=?";
-			final PreparedStatement statement=con.prepareStatement(querySelect);
+			final PreparedStatement statement=con.prepareStatement(SELECT_USER_BY_LOGIN);
 			
 			try(statement){
 				statement.setString(1,login);
@@ -45,15 +43,14 @@ public class UserDataDAO {
 					
 					try(resultSet){
 						while(resultSet.next()) {
-							UserDataDTO fila=new UserDataDTO(
+								userDataDTO=new UserDataDTO(
 								resultSet.getInt("id"),
 								resultSet.getString("login"),
 								resultSet.getString("password"));
-							userPassword.add(fila);
 						}
 					}
 				}
-				return userPassword;
+				return userDataDTO;
 			}catch(SQLException e) {
 				throw new RuntimeException(e);
 			}
