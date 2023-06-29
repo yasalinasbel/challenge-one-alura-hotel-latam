@@ -42,7 +42,7 @@ public class UserDataDAO {
 				final ResultSet resultSet=statement.getResultSet();
 					
 					try(resultSet){
-						while(resultSet.next()) {
+						if(resultSet.next()) {
 								userDataDTO=new UserDataDTO(
 								resultSet.getInt("id"),
 								resultSet.getString("login"),

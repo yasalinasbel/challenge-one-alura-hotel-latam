@@ -16,9 +16,9 @@ public class UserDataDAOTest {
 	public void testGetUserByLogin() throws SQLException {
 		UserDataDTO userByLogin = userDataDAO.getUserByLogin("cbeltran");
 		
-		String userData=userByLogin.getLogin();
+		String userLogin=userByLogin.getLogin();
 
-		Assert.assertNotNull(userData);	
+		Assert.assertNotNull(userLogin);	
 		
 	}
 }
