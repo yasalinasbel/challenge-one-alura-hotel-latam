@@ -15,11 +15,11 @@ public class UserService {
 		this.userDataDAO = userDataDAO;
 	}
 	
-	public boolean loginUser(String login, String constrasena) {
+	public boolean loginUser(String login, String password) {
 		UserDataDTO userByLogin = userDataDAO.getUserByLogin(login);
 		
 		if(userByLogin!= null){
-			if(userByLogin.getPassword().equals(constrasena)){
+			if(userByLogin.getPassword().equals(password)){
 				return true;
 			}
 		}

@@ -32,7 +32,7 @@ public class Login extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	final DbLogin dbLogin;
-	final UserService userService;
+	private final UserService userService;
 
 	/**
 	 * Launch the application.

@@ -19,7 +19,7 @@ public class UserServiceTest {
 	private UserDataDAO userDataDAO;	
 	private UserService userService;
 	
-	@Before
+	@Before 
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
 		userService = new UserService(userDataDAO);
@@ -31,7 +31,17 @@ public class UserServiceTest {
 		Mockito.doReturn(mockedUser).when(userDataDAO).getUserByLogin("cbeltran");
 		
 		boolean loginUser = userService.loginUser("cbeltran", "goodpassword");
-		Assert.assertTrue("True user", loginUser);
+		Assert.assertTrue("Couln't login user", loginUser);
 	}
+	
+	@Test
+	public void testNoLoginUser() {
+		UserDataDTO mockedUser = new UserDataDTO(1, "cbeltran", "goodpassword");
+		Mockito.doReturn(mockedUser).when(userDataDAO).getUserByLogin("cbeltran");
+		
+		boolean loginUser = userService.loginUser("dbeltran", "goodpassword");
+		Assert.assertFalse("User shouldn't have login", loginUser);
+	}
+
 
 }
