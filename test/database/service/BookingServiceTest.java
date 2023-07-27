@@ -13,7 +13,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import database.dao.BookingDataDAO;
+import database.dao.GuestDataDAO;
 import database.dto.BookingDataDTO;
+import database.dto.GuestDataDTO;
+import database.dto.NationalityDTO;
 import database.dto.PaymentMethodDTO;
 import service.BookingService;
 
@@ -23,12 +26,15 @@ public class BookingServiceTest {
 	@Mock
 	private BookingDataDAO bookingDataDAO;
 	
+	@Mock
+	private GuestDataDAO guestDataDAO;
+	
 	private BookingService bookingService;
 	
 	@Before 
 	public void setUp() throws SQLException {
 		MockitoAnnotations.openMocks(this);
-		bookingService = new BookingService(bookingDataDAO);
+		bookingService = new BookingService(bookingDataDAO,guestDataDAO);
 	}
 	
 	@Test
@@ -37,7 +43,16 @@ public class BookingServiceTest {
 		bookingDataDTO.setId(123);
 		Mockito.doReturn(bookingDataDTO).when(bookingDataDAO).save(any(BookingDataDTO.class));
 		
-		Integer id = bookingService.savedBooking(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH);
+		Integer id = bookingService.saveBooking(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH);
 		assertEquals((Integer) 123, id);
+	}
+	
+	@Test
+	public void testSaveGuest() {
+		GuestDataDTO guestDataDTO=new GuestDataDTO("Gabriel","Salinas",LocalDateTime.now(),NationalityDTO.ARGENTIN,"2345777",1);
+		Mockito.doReturn(guestDataDTO).when(guestDataDAO).save(any(GuestDataDTO.class));
+		
+		bookingService.saveGuest("Gabriel","Salinas",LocalDateTime.now(),NationalityDTO.ARGENTIN,"2345777",1);
+
 	}
 }
