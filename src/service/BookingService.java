@@ -28,12 +28,6 @@ public class BookingService {
 		this.guestDataDAO = guestDataDAO;
 		this.setting = new Setting();
 	}
-	
-	public BookingService(GuestDataDAO guestDataDAO) {
-		this.bookingDataDAO = new BookingDataDAO();
-		this.guestDataDAO=new GuestDataDAO();
-		this.setting = new Setting();
-	}
 
 	public Integer saveBooking(LocalDateTime entryDate, LocalDateTime departureDate, PaymentMethodDTO methodPayment)  {
 		Duration duration=Duration.between(entryDate, departureDate);
@@ -51,6 +45,7 @@ public class BookingService {
 	
 	public void saveGuest(String name, String lastName,LocalDateTime birthDate, NationalityDTO nationality, String phoneNumber, Integer idBooking) {
 		GuestDataDTO guestDataDTO=new GuestDataDTO(name,lastName,birthDate,nationality,phoneNumber,idBooking);	
-		guestDataDAO.save(guestDataDTO);
+		GuestDataDTO guestData = guestDataDAO.save(guestDataDTO);
+
 	}
 }

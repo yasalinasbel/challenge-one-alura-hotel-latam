@@ -2,6 +2,9 @@ package database.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -43,7 +46,7 @@ public class BookingServiceTest {
 		bookingDataDTO.setId(123);
 		Mockito.doReturn(bookingDataDTO).when(bookingDataDAO).save(any(BookingDataDTO.class));
 		
-		Integer id = bookingService.saveBooking(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH);
+		Integer id = bookingService.saveBooking(LocalDateTime.now(),LocalDateTime.of(2023,12,30,10,30),PaymentMethodDTO.CREDIT);
 		assertEquals((Integer) 123, id);
 	}
 	
@@ -54,5 +57,6 @@ public class BookingServiceTest {
 		
 		bookingService.saveGuest("Gabriel","Salinas",LocalDateTime.now(),NationalityDTO.ARGENTIN,"2345777",1);
 
+		verify(guestDataDAO).save(any(GuestDataDTO.class));
 	}
 }

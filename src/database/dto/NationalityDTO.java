@@ -3,7 +3,7 @@ package database.dto;
 public enum NationalityDTO {
 
 	AFGAN ("AFGAN","afgano-afgana"),
-	GERMAN ("GERMAN","alemán-alemana"),
+	GERMAN ("GERMAN","alem\u00e1n-alemana"),
 	ARGENTIN ("ARGENTIN","argentino-argentina");
 	
 	private final String name;
