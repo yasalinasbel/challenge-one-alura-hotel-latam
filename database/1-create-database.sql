@@ -10,7 +10,7 @@ CREATE TABLE booking (
 	entry_date TIMESTAMP,
 	departure_date TIMESTAMP,
 	price DOUBLE,
-	method_payment VARCHAR(20),
+	payment_method VARCHAR(20),
 	PRIMARY KEY(id)
 )Engine=InnoDB;
 

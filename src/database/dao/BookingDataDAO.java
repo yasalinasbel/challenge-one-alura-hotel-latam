@@ -15,15 +15,15 @@ import database.dto.PaymentMethodDTO;
 
 public class BookingDataDAO extends MainDAO {
 	
-	private static final String SAVE_IN_BOOKING="INSERT INTO booking(entry_date,departure_date,method_payment,price)"+
+	private static final String SAVE_IN_BOOKING="INSERT INTO booking(entry_date,departure_date,payment_method,price)"+
 			"VALUES(?,?,?,?)";
-	private static final String SELECT_BOOKING_TABLE = "SELECT id, entry_date, departure_date, price, method_payment FROM booking";
+	private static final String SELECT_BOOKING_TABLE = "SELECT id, entry_date, departure_date, price, payment_method FROM booking";
 	
-	private static final String SELECT_BOOKING_TABLE_BY_ID="SELECT id, entry_date, departure_date, price, method_payment FROM booking WHERE id=?";
+	private static final String SELECT_BOOKING_TABLE_BY_ID="SELECT id, entry_date, departure_date, price, payment_method FROM booking WHERE id=?";
 	
 	private static final String DELETE_BOOKING_BY_ID="DELETE FROM booking WHERE id=?";
 	
-	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?,departure_date=?,price=?,method_payment=? WHERE id=?";
+	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?,departure_date=?,price=?,payment_method=? WHERE id=?";
 	
 	public BookingDataDTO save(BookingDataDTO bookingData) {
 		Connection con= super.getConnection();
@@ -119,7 +119,7 @@ public class BookingDataDAO extends MainDAO {
 				
 				BigDecimal price = resultSet.getBigDecimal("price");
 				
-				String databasePaymentMethod=resultSet.getString("method_payment");
+				String databasePaymentMethod=resultSet.getString("payment_method");
 				
 				PaymentMethodDTO paymentMethod=PaymentMethodDTO.valueOf(databasePaymentMethod);
 				
