@@ -22,6 +22,16 @@ public class GuestDataDTO {
 		this.idBooking=idBooking;
 	}
 
+	public GuestDataDTO(int id, String name, String lastName, LocalDateTime birthDate, NationalityDTO nationality,
+			String phoneNumber, Integer idBooking) {
+		this.name=name;
+		this.lastName=lastName;
+		this.birthDate=birthDate;
+		this.nationality=nationality;
+		this.phoneNumber=phoneNumber;
+		this.idBooking=idBooking;
+	}
+
 	public String getName() {
 		return name;
 	}

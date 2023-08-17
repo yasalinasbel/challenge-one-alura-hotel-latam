@@ -3,6 +3,7 @@ package service;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import config.Setting;
 import database.dao.BookingDataDAO;
 import database.dao.GuestDataDAO;
@@ -46,6 +47,21 @@ public class BookingService {
 	public void saveGuest(String name, String lastName,LocalDateTime birthDate, NationalityDTO nationality, String phoneNumber, Integer idBooking) {
 		GuestDataDTO guestDataDTO=new GuestDataDTO(name,lastName,birthDate,nationality,phoneNumber,idBooking);	
 		GuestDataDTO guestData = guestDataDAO.save(guestDataDTO);
+	}
 
+	public List<BookingDataDTO> loadBookingList() {
+		return bookingDataDAO.searchBookingList();
+	}
+	
+	public BookingDataDTO loadBookingListById(int idSearch) {
+		return bookingDataDAO.searchByIdBooking(idSearch);
+	}
+
+	public int modifyBooking (BookingDataDTO bookingDataDTO) {
+		return bookingDataDAO.modify(bookingDataDTO);
+	}
+	
+	public int deleteBooking (int id){
+		return bookingDataDAO.delete(id);
 	}
 }
