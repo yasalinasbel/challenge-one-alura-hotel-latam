@@ -15,7 +15,7 @@ import database.dto.PaymentMethodDTO;
 
 public class BookingDataDAO extends MainDAO {
 	
-	private static final String SAVE_IN_BOOKING="INSERT INTO booking(entry_date,departure_date,payment_method,price)"+
+	private static final String SAVE_IN_BOOKING="INSERT INTO booking(entry_date, departure_date, payment_method, price)"+
 			"VALUES(?,?,?,?)";
 	private static final String SELECT_BOOKING_TABLE = "SELECT id, entry_date, departure_date, price, payment_method FROM booking";
 	
@@ -23,7 +23,7 @@ public class BookingDataDAO extends MainDAO {
 	
 	private static final String DELETE_BOOKING_BY_ID="DELETE FROM booking WHERE id=?";
 	
-	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?,departure_date=?,price=?,payment_method=? WHERE id=?";
+	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?, departure_date=?, price=?, payment_method=? WHERE id=?";
 	
 	public BookingDataDTO save(BookingDataDTO bookingData) {
 		Connection con= super.getConnection();
@@ -42,17 +42,27 @@ public class BookingDataDAO extends MainDAO {
 
 	Integer saveRecord(BookingDataDTO bookingData, PreparedStatement statement) throws SQLException {
 		LocalDateTime entryDatebyUser=bookingData.getEntryDate();
-		Timestamp entryTimestampUser=Timestamp.valueOf(entryDatebyUser);
+		Timestamp entryTimestampUser = null;
+		if (entryDatebyUser != null) {
+			entryTimestampUser=Timestamp.valueOf(entryDatebyUser);
+		}
 		
 		LocalDateTime departureDatebyUser=bookingData.getDepartureDate();
-		Timestamp departureTimestampUser=Timestamp.valueOf(departureDatebyUser);
-		
-		String methodPaymentUser = bookingData.getPaymentMethod().getName();
+		Timestamp departureTimestampUser=null;
+		if(departureDatebyUser!=null) {
+			departureTimestampUser=Timestamp.valueOf(departureDatebyUser);
+		}
+			
+		PaymentMethodDTO methodPaymentUser = bookingData.getPaymentMethod();
+		String methodPayment=null;
+		if(methodPaymentUser!=null) {
+			methodPayment= methodPaymentUser.getName();
+		}
 		BigDecimal priceByBookingService=bookingData.getPrice();
 		
 		statement.setTimestamp(1,entryTimestampUser);
 		statement.setTimestamp(2, departureTimestampUser);
-		statement.setString(3, methodPaymentUser);
+		statement.setString(3, methodPayment);
 		statement.setBigDecimal(4, priceByBookingService);
 		
 		statement.execute();

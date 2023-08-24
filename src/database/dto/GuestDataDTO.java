@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public class GuestDataDTO {
 	
-	private int id;
 	private String name;
 	private String lastName;
 	private LocalDateTime birthDate;

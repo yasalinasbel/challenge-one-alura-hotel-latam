@@ -2,21 +2,16 @@ package database.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import database.dto.GuestDataDTO;
-import database.dto.NationalityDTO;
 
 public class GuestDataDAO extends MainDAO {
 	
-	private static final String SAVE_IN_GUEST="INSERT INTO guest(name,lastname,birthdate,nationality,telephone,id_booking)"+
+	private static final String SAVE_IN_GUEST="INSERT INTO guest(name, lastname, birthdate, nationality, telephone, id_booking)"+
 			"VALUES(?,?,?,?,?,?)";
-	private static final String SELECT_GUEST_TABLE = "SELECT id, name, lastname, birthdate,nationality,telephone,id_booking  FROM guest";
 	
 	public GuestDataDTO save(GuestDataDTO guestData) {
 		Connection con= super.getConnection();	
@@ -49,53 +44,4 @@ public class GuestDataDAO extends MainDAO {
 		
 		statement.execute();
 	}
-	
-	public List<GuestDataDTO> selectGuestList(){
-		List<GuestDataDTO> guestdataList=new ArrayList<>();
-		Connection con= super.getConnection();
-		GuestDataDTO guestDataDTO=null;
-
-		try {
-			final PreparedStatement statement=con.prepareStatement(SELECT_GUEST_TABLE);
-			
-			try(statement){
-				statement.execute();
-				final ResultSet resultSet=statement.getResultSet();
-				
-				try(resultSet){
-					while(resultSet.next()) {
-						int id = resultSet.getInt("id");
-						
-						String name=resultSet.getString("name");
-						
-						String lastName=resultSet.getString("lastname");
-						
-						LocalDateTime birthDate = resultSet.getTimestamp("birthdate").toLocalDateTime();
-						
-						String nationalityString=resultSet.getString("nationality");
-						NationalityDTO nationality=NationalityDTO.valueOf(nationalityString);
-						
-						String phoneNumber=resultSet.getString("telephone");
-						
-						Integer idBooking = resultSet.getInt("id_booking");
-						
-						
-						GuestDataDTO guestRow=new GuestDataDTO(
-								id,
-								name,
-								lastName,
-								birthDate,
-								nationality,
-								phoneNumber,
-								idBooking);
-						guestdataList.add(guestRow);				
-					}
-				}
-			}
-			return guestdataList;
-		}catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 }

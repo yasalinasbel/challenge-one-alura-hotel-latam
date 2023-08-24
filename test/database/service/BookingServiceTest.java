@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +47,7 @@ public class BookingServiceTest {
 		bookingDataDTO.setId(123);
 		Mockito.doReturn(bookingDataDTO).when(bookingDataDAO).save(any(BookingDataDTO.class));
 		
-		Integer id = bookingService.saveBooking(LocalDateTime.now(),LocalDateTime.of(2023,12,30,10,30),PaymentMethodDTO.CREDIT);
+		Integer id = bookingService.saveBooking(LocalDateTime.of(2023,12,29,10,30),LocalDateTime.of(2023,12,30,10,30),PaymentMethodDTO.CREDIT);
 		assertEquals((Integer) 123, id);
 	}
 	
@@ -76,7 +77,7 @@ public class BookingServiceTest {
 		
 		List<BookingDataDTO> loadBookingList = bookingService.loadBookingList();
 		
-		verify(bookingDataDAO).searchBookingList();
+		Assert.assertEquals(listBookingDataDTO,loadBookingList);
 		
 	}
 	
@@ -96,11 +97,16 @@ public class BookingServiceTest {
 		listBookingDataDTO.add(bookingDataDTO2);
 		
 		Mockito.doReturn(listBookingDataDTO.get(0)).when(bookingDataDAO).searchByIdBooking(1);
+		Mockito.doReturn(listBookingDataDTO.get(1)).when(bookingDataDAO).searchByIdBooking(2);
+		Mockito.doReturn(listBookingDataDTO.get(2)).when(bookingDataDAO).searchByIdBooking(3);
 		
-		BookingDataDTO loadBookingListById = bookingService.loadBookingListById(1);
+		BookingDataDTO loadedBooking = bookingService.loadBookingListById(1);
+		BookingDataDTO loadedBooking1 = bookingService.loadBookingListById(2);
+		BookingDataDTO loadedBooking2 = bookingService.loadBookingListById(3);
 		
-		assertEquals(bookingDataDTO, loadBookingListById);
-		
+		assertEquals(bookingDataDTO, loadedBooking);
+		assertEquals(bookingDataDTO1, loadedBooking1);
+		assertEquals(bookingDataDTO2, loadedBooking2);
 	}
 	
 	@Test
@@ -112,6 +118,8 @@ public class BookingServiceTest {
 		int modifyBooking = bookingService.modifyBooking(bookingDataDTO1Modified);
 		
 		verify(bookingDataDAO).modify(bookingDataDTO1Modified);
+		
+		assertEquals(1,modifyBooking);
 	
 	}
 	
@@ -120,9 +128,11 @@ public class BookingServiceTest {
 
 		Mockito.doReturn(1).when(bookingDataDAO).delete(3);
 		
-		bookingService.deleteBooking(3);
+		int deleteBooking = bookingService.deleteBooking(3);
 				
 		verify(bookingDataDAO).delete(3);
+		
+		assertEquals(1,deleteBooking);
 
 	}
 }

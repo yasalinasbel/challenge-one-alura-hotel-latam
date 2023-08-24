@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,7 @@ public class BookingDataDAOTest {
 	private BookingDataDAO bookingDataDAO = new BookingDataDAO();
 
 	@Test
-	public void testSaveBooking() throws SQLException {
+	public void testBookingCrudTest() throws SQLException {
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
 		
 		BookingDataDTO booking=new BookingDataDTO(entryDate,LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000.0"));
@@ -30,25 +29,28 @@ public class BookingDataDAOTest {
 		
 		BookingDataDTO bookingSearched = bookingDataDAO.searchByIdBooking(bookingSaved.getId());
 		Assert.assertNotNull(bookingSearched);
-		Assert.assertEquals(bookingSaved.getId(), bookingSearched.getId());
-		Assert.assertEquals(bookingSaved.getEntryDate(), bookingSearched.getEntryDate());
-		Assert.assertEquals(bookingSaved.getDepartureDate(), bookingSearched.getDepartureDate());
-		Assert.assertEquals(bookingSaved.getPrice(), bookingSearched.getPrice());
-		Assert.assertEquals(bookingSaved.getPaymentMethod(), bookingSearched.getPaymentMethod());
+		assertAttributes(bookingSaved,bookingSearched);
 		
-		BookingDataDTO bookingToModify=new BookingDataDTO(bookingSearched.getId(),LocalDateTime.of(2023,12,10,10,30), LocalDateTime.of(2024,01,01,10,30), new BigDecimal("30000"), PaymentMethodDTO.CREDIT);
+		BookingDataDTO bookingToModify=new BookingDataDTO(bookingSearched.getId(),LocalDateTime.of(2023,12,10,10,30), LocalDateTime.of(2024,01,01,10,30), new BigDecimal("30000.0"), PaymentMethodDTO.CREDIT);
 		
 		int bookingModified = bookingDataDAO.modify(bookingToModify);
 		Assert.assertNotNull(bookingSearched);
 		Assert.assertTrue(1 == bookingModified);
 		
+		BookingDataDTO bookingSearchedModified = bookingDataDAO.searchByIdBooking(bookingToModify.getId());
+		Assert.assertNotNull(bookingSearchedModified);
+		assertAttributes(bookingToModify,bookingSearchedModified);
+		
 		int deletedRecords = bookingDataDAO.delete(bookingToModify.getId());
 		Assert.assertTrue(1 == deletedRecords);
+		
+		BookingDataDTO bookingDeleted = bookingDataDAO.searchByIdBooking(bookingToModify.getId());
+		Assert.assertNull(bookingDeleted);
+		
 	}
 
 	@Test
 	public void testSearchBookingList() {
-		
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
 		BookingDataDTO booking=new BookingDataDTO(entryDate,LocalDateTime.of(2023,12,12,11,30),PaymentMethodDTO.CASH,new BigDecimal("6000.0"));
 		BookingDataDTO booking2=new BookingDataDTO(entryDate,LocalDateTime.of(2023,10,12,8,30),PaymentMethodDTO.CASH,new BigDecimal("7000.0"));
@@ -59,9 +61,9 @@ public class BookingDataDAOTest {
 		BookingDataDTO bookingSaved2 = bookingDataDAO.save(booking3);
 		
 		List<BookingDataDTO> searchBookingList = bookingDataDAO.searchBookingList();
-		for (BookingDataDTO elemento:searchBookingList) {
-			System.out.println(elemento);
-		}
+		assertAttributes(bookingSaved,searchBookingList.get(0));
+		assertAttributes(bookingSaved1,searchBookingList.get(1));
+		assertAttributes(bookingSaved2,searchBookingList.get(2));
 		
 		int deletedRecords = bookingDataDAO.delete(bookingSaved.getId());	
 		int deletedRecords2 = bookingDataDAO.delete(bookingSaved1.getId());
@@ -70,4 +72,25 @@ public class BookingDataDAOTest {
 		Assert.assertTrue(1 == deletedRecords2);
 		Assert.assertTrue(1 == deletedRecords);
 	}	
+	
+	@Test
+	public void testGetBookingAttributes() {
+		Assert.assertThrows(RuntimeException.class,()->{
+		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
+		BookingDataDTO booking=new BookingDataDTO(null,null,null,new BigDecimal("6000.0"));
+		BookingDataDTO booking2=new BookingDataDTO(entryDate,LocalDateTime.of(2023,10,12,8,30),PaymentMethodDTO.CASH,new BigDecimal("7000.0"));
+		
+		bookingDataDAO.save(booking);
+		bookingDataDAO.save(booking2);
+		
+		});
+	}
+	
+	private void assertAttributes(BookingDataDTO bookingToBeCompared, BookingDataDTO bookingWhoComparesTo) {
+		Assert.assertEquals(bookingToBeCompared.getId(), bookingWhoComparesTo.getId());
+		Assert.assertEquals(bookingToBeCompared.getEntryDate(), bookingWhoComparesTo.getEntryDate());
+		Assert.assertEquals(bookingToBeCompared.getDepartureDate(), bookingWhoComparesTo.getDepartureDate());
+		Assert.assertEquals(bookingToBeCompared.getPrice(), bookingWhoComparesTo.getPrice());
+		Assert.assertEquals(bookingToBeCompared.getPaymentMethod(), bookingWhoComparesTo.getPaymentMethod());
+	}
 }

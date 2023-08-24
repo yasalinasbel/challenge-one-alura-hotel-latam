@@ -35,15 +35,6 @@ public class BookingDataDTO {
 
 	}
 
-	public BookingDataDTO(LocalDateTime entryDate, LocalDateTime departureDate, BigDecimal price,
-			PaymentMethodDTO paymentMethod) {
-
-		this.entryDate=entryDate;
-		this.departureDate=departureDate;
-		this.paymentMethod=paymentMethod;
-		this.price=price;
-
-	}
 	public LocalDateTime getEntryDate() {
 		return entryDate;
 	}
@@ -88,6 +79,6 @@ public class BookingDataDTO {
 	
 	@Override
 	public String toString() {
-		return "BookingDataDTO"+"Id="+this.id+"entrydate="+this.entryDate +"departuredate="+this.departureDate+"price="+this.price+"methodp="+this.paymentMethod;
+		return "BookingDataDTO"+"Id="+this.id+"entrydate="+this.entryDate +"departuredate="+this.departureDate+"price="+this.price+"paymentMethod="+this.paymentMethod;
 	}
 }

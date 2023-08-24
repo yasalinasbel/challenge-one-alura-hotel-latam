@@ -31,6 +31,22 @@ public class BookingService {
 	}
 
 	public Integer saveBooking(LocalDateTime entryDate, LocalDateTime departureDate, PaymentMethodDTO methodPayment)  {
+		if (entryDate == null) {
+			throw new IllegalArgumentException("entryDate was null");
+		}
+		if (departureDate == null) {
+			throw new IllegalArgumentException("departure was null");
+		}
+		if (methodPayment == null) {
+			throw new IllegalArgumentException("method payment was null");
+		}
+		if (entryDate.isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("entry date is incorrect");
+		}
+		if (departureDate.isBefore(entryDate)) {
+			throw new IllegalArgumentException("departure date is incorrect");
+		}
+		
 		Duration duration=Duration.between(entryDate, departureDate);
 		BigDecimal days=new BigDecimal(duration.toDays());
 		
@@ -46,7 +62,7 @@ public class BookingService {
 	
 	public void saveGuest(String name, String lastName,LocalDateTime birthDate, NationalityDTO nationality, String phoneNumber, Integer idBooking) {
 		GuestDataDTO guestDataDTO=new GuestDataDTO(name,lastName,birthDate,nationality,phoneNumber,idBooking);	
-		GuestDataDTO guestData = guestDataDAO.save(guestDataDTO);
+		guestDataDAO.save(guestDataDTO);
 	}
 
 	public List<BookingDataDTO> loadBookingList() {
