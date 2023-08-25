@@ -32,19 +32,22 @@ public class BookingService {
 
 	public Integer saveBooking(LocalDateTime entryDate, LocalDateTime departureDate, PaymentMethodDTO methodPayment)  {
 		if (entryDate == null) {
-			throw new IllegalArgumentException("entryDate was null");
+			throw new IllegalArgumentException("Entry date was null");
 		}
 		if (departureDate == null) {
-			throw new IllegalArgumentException("departure was null");
+			throw new IllegalArgumentException("Departure date was null");
 		}
 		if (methodPayment == null) {
-			throw new IllegalArgumentException("method payment was null");
+			throw new IllegalArgumentException("Method payment was null");
+		}		
+		if (departureDate.toLocalDate().isBefore(entryDate.toLocalDate())){
+			throw new IllegalArgumentException("Entry date can't be before departure date");
+		}
+		if (departureDate.toLocalDate().isEqual(entryDate.toLocalDate())){
+			throw new IllegalArgumentException("Entry date can't be equal to departure date");
 		}
 		if (entryDate.isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("entry date is incorrect");
-		}
-		if (departureDate.isBefore(entryDate)) {
-			throw new IllegalArgumentException("departure date is incorrect");
+			throw new IllegalArgumentException("Entry date can't be before today");
 		}
 		
 		Duration duration=Duration.between(entryDate, departureDate);

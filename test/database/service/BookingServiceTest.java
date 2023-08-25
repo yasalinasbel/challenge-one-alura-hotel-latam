@@ -77,6 +77,7 @@ public class BookingServiceTest {
 		
 		List<BookingDataDTO> loadBookingList = bookingService.loadBookingList();
 		
+		verify(bookingDataDAO).searchBookingList();
 		Assert.assertEquals(listBookingDataDTO,loadBookingList);
 		
 	}
@@ -125,7 +126,6 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testDeleteBooking() {
-
 		Mockito.doReturn(1).when(bookingDataDAO).delete(3);
 		
 		int deleteBooking = bookingService.deleteBooking(3);
@@ -134,6 +134,19 @@ public class BookingServiceTest {
 		
 		assertEquals(1,deleteBooking);
 
+	}
+	@Test
+	public void testIncorrectTimeEntryDate() {	
+		try {
+			BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,31,11,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
+			bookingDataDTO.setId(123);
+			Mockito.doReturn(bookingDataDTO).when(bookingDataDAO).save(any(BookingDataDTO.class));
+			
+			Integer id = bookingService.saveBooking(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,30,11,30),PaymentMethodDTO.CREDIT);
+		}catch(RuntimeException e) {
+			Assert.assertNotNull(e);
+			System.out.println(e.getMessage());
+		}
 	}
 }
 

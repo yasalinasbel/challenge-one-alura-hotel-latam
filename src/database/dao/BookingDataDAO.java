@@ -53,10 +53,10 @@ public class BookingDataDAO extends MainDAO {
 			departureTimestampUser=Timestamp.valueOf(departureDatebyUser);
 		}
 			
-		PaymentMethodDTO methodPaymentUser = bookingData.getPaymentMethod();
+		PaymentMethodDTO paymentMethodUser = bookingData.getPaymentMethod();
 		String methodPayment=null;
-		if(methodPaymentUser!=null) {
-			methodPayment= methodPaymentUser.getName();
+		if(paymentMethodUser!=null) {
+			methodPayment= paymentMethodUser.getName();
 		}
 		BigDecimal priceByBookingService=bookingData.getPrice();
 		
