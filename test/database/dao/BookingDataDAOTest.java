@@ -76,16 +76,15 @@ public class BookingDataDAOTest {
 	@Test
 	public void testGetBookingAttributes() {
 		try {
-			LocalDateTime entryDate=LocalDateTime.now().withNano(0);
 			BookingDataDTO booking=new BookingDataDTO(null,null,null,new BigDecimal("6000.0"));
-			BookingDataDTO booking2=new BookingDataDTO(entryDate,LocalDateTime.of(2023,10,12,8,30),PaymentMethodDTO.CASH,new BigDecimal("7000.0"));
 			
 			bookingDataDAO.save(booking);
-			bookingDataDAO.save(booking2);
 			Assert.fail("This test should have failed");
 		}catch(RuntimeException e) {
 			Assert.assertNotNull(e);
-			System.out.println(e.getMessage());
+			String error="java.sql.SQLIntegrityConstraintViolationException: Column 'entry_date' cannot be null";
+			Assert.assertEquals(error,e.getMessage());
+
 		}
 	}
 	

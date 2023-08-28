@@ -142,10 +142,22 @@ public class BookingServiceTest {
 			bookingDataDTO.setId(123);
 			Mockito.doReturn(bookingDataDTO).when(bookingDataDAO).save(any(BookingDataDTO.class));
 			
-			Integer id = bookingService.saveBooking(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,30,11,30),PaymentMethodDTO.CREDIT);
+			bookingService.saveBooking(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,30,11,30),PaymentMethodDTO.CREDIT);
 		}catch(RuntimeException e) {
 			Assert.assertNotNull(e);
-			System.out.println(e.getMessage());
+			String error="Entry date can't be equal to departure date";
+			Assert.assertEquals(error,e.getMessage());
+		}
+	}
+	@Test
+	public void testIncorrectDepartureTime() {
+		try {			
+			bookingService.saveBooking(LocalDateTime.of(2023,10,12,12,0,0),LocalDateTime.of(2023,10,12,12,0,1),PaymentMethodDTO.CASH);
+			Assert.fail("This test should have failed");
+		}catch(RuntimeException e) {
+			Assert.assertNotNull(e);
+			String error="Entry date can't be equal to departure date";
+			Assert.assertEquals(error,e.getMessage());
 		}
 	}
 }

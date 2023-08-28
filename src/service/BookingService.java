@@ -41,7 +41,7 @@ public class BookingService {
 			throw new IllegalArgumentException("Method payment was null");
 		}		
 		if (departureDate.toLocalDate().isBefore(entryDate.toLocalDate())){
-			throw new IllegalArgumentException("Entry date can't be before departure date");
+			throw new IllegalArgumentException("Departure date can't be before entry date ");
 		}
 		if (departureDate.toLocalDate().isEqual(entryDate.toLocalDate())){
 			throw new IllegalArgumentException("Entry date can't be equal to departure date");
