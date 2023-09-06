@@ -21,7 +21,12 @@ public class GuestDataDAOTest {
 	@Test
 	public void testGuestCrudTest() throws SQLException {
 		
-		BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
+		LocalDateTime entryDate = LocalDateTime.now();
+		LocalDateTime departureDate = LocalDateTime.of(2023,12,12,10,30);
+		BigDecimal price = new BigDecimal("6000");
+		PaymentMethodDTO paymentMethod = PaymentMethodDTO.CASH;
+		
+		BookingDataDTO bookingDataDTO=new BookingDataDTO(entryDate,departureDate,paymentMethod,price);
 		BookingDataDTO bookingSaved = bookingDataDAO.save(bookingDataDTO);
 
 		GuestDataDTO guest=new GuestDataDTO("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),NationalityDTO.ARGENTIN,"1234567",bookingSaved.getId());	
@@ -29,7 +34,8 @@ public class GuestDataDAOTest {
 		GuestDataDTO guestSaved = guestDataDAO.save(guest);
 		Assert.assertNotNull(guestSaved);
 		Assert.assertNotNull(guestSaved.getId());
-		
+		assertEqualsGuestDataDTO(guest,guestSaved);
+	
 		GuestDataDTO guestSearched = guestDataDAO.searchByIdGuest(guestSaved.getIdBooking());
 		Assert.assertNotNull(guestSearched);
 		assertEqualsGuestDataDTO(guestSaved,guestSearched);
@@ -84,14 +90,18 @@ public class GuestDataDAOTest {
 		Assert.assertTrue(1 == deletedRecords);
 		Assert.assertTrue(1 == deletedRecords2);
 		Assert.assertTrue(1 == deletedRecords3);
+		
+		bookingDataDAO.delete(bookingSaved.getId());
+		bookingDataDAO.delete(bookingSaved2.getId());
+		bookingDataDAO.delete(bookingSaved3.getId());
 	}	
 	
 	@Test
 	public void testGetGuestAttributes() {
+		BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
+		BookingDataDTO bookingSaved = bookingDataDAO.save(bookingDataDTO);
+		
 		try {
-			BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
-			BookingDataDTO bookingSaved = bookingDataDAO.save(bookingDataDTO);
-
 			GuestDataDTO guest=new GuestDataDTO(null,null,LocalDateTime.of(1990,12,12,10,30),NationalityDTO.ARGENTIN,"1234567",bookingSaved.getId());
 			
 			guestDataDAO.save(guest);
@@ -101,6 +111,31 @@ public class GuestDataDAOTest {
 			String error="java.sql.SQLIntegrityConstraintViolationException: Column 'name' cannot be null";
 			Assert.assertEquals(error,e.getMessage());
 		}
+		bookingDataDAO.delete(bookingSaved.getId());
+	}
+	
+	@Test
+	public void testSaveBirthdateNull() {
+		BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
+		BookingDataDTO bookingSaved = bookingDataDAO.save(bookingDataDTO);
+		
+		GuestDataDTO guest=new GuestDataDTO("Juliana","Salinas",null,NationalityDTO.ARGENTIN,"1234567",bookingSaved.getId());
+		guestDataDAO.save(guest);
+		
+		guestDataDAO.delete(guest.getId());	
+		bookingDataDAO.delete(bookingSaved.getId());
+	}
+	
+	@Test
+	public void testSaveNationalityNull() {
+		BookingDataDTO bookingDataDTO=new BookingDataDTO(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethodDTO.CASH,new BigDecimal("6000"));
+		BookingDataDTO bookingSaved = bookingDataDAO.save(bookingDataDTO);
+		
+		GuestDataDTO guest=new GuestDataDTO("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),null,"1234567",bookingSaved.getId());
+		guestDataDAO.save(guest);
+		
+		guestDataDAO.delete(guest.getId());	
+		bookingDataDAO.delete(bookingSaved.getId());
 	}
 	
 	private void assertEqualsGuestDataDTO(GuestDataDTO guestToBeCompared, GuestDataDTO guestWhoComparesTo) {
@@ -111,7 +146,5 @@ public class GuestDataDAOTest {
 		Assert.assertEquals(guestToBeCompared.getNationality(), guestWhoComparesTo.getNationality());
 		Assert.assertEquals(guestToBeCompared.getPhoneNumber(), guestWhoComparesTo.getPhoneNumber());
 		Assert.assertEquals(guestToBeCompared.getIdBooking(), guestWhoComparesTo.getIdBooking());
-
 	}
-
 }

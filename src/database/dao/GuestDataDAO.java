@@ -22,7 +22,7 @@ public class GuestDataDAO extends MainDAO {
 	
 	private static final String DELETE_GUEST_BY_ID="DELETE FROM guest WHERE id=?";
 	
-	private static final String MODIFY_GUEST="UPDATE guest SET name=?, lastname=?, birthdate=?, nationality=?, telephone=? WHERE id_booking=?";
+	private static final String MODIFY_GUEST="UPDATE guest SET name=?, lastname=?, birthdate=?, nationality=?, telephone=? WHERE id=?";
 	
 	public GuestDataDTO save(GuestDataDTO guestData) {
 		Connection con= super.getConnection();	
@@ -42,9 +42,19 @@ public class GuestDataDAO extends MainDAO {
 	Integer saveRecordGuest(GuestDataDTO guestData, PreparedStatement statement) throws SQLException {
 		String name = guestData.getName();
 		String lastName = guestData.getLastName();
+		
 		LocalDateTime birthDate=guestData.getBirthDate();
-		Timestamp brithDateTimestamp=Timestamp.valueOf(birthDate);
-		String nationality = guestData.getNationality().getName();
+		Timestamp brithDateTimestamp=null;
+		if(birthDate!=null) {
+			brithDateTimestamp=Timestamp.valueOf(birthDate);
+		}
+		
+		NationalityDTO nationalityMethodUser=guestData.getNationality();
+		String nationality=null;
+		if(nationalityMethodUser!=null) {
+			nationality=nationalityMethodUser.getName();
+		}
+		
 		String phoneNumber=guestData.getPhoneNumber();
 		Integer idBooking=guestData.getIdBooking();
 		
@@ -76,7 +86,7 @@ public class GuestDataDAO extends MainDAO {
 			try(statement){
 				statement.execute();
 				final ResultSet resultSet=statement.getResultSet();
-				guestdataList = getGuestAttributes(resultSet);
+				guestdataList = parseGuestAttributes(resultSet);
 			}	
 		}catch(SQLException e) {
 			throw new RuntimeException(e);
@@ -95,7 +105,7 @@ public class GuestDataDAO extends MainDAO {
 				statement.setInt(1, idSearch);
 				statement.execute();
 				final ResultSet resultSet=statement.getResultSet();
-				List<GuestDataDTO> guestdataList = getGuestAttributes(resultSet);
+				List<GuestDataDTO> guestdataList = parseGuestAttributes(resultSet);
 				if (!guestdataList.isEmpty()) {
 					guestdata = guestdataList.get(0);
 				}
@@ -106,7 +116,7 @@ public class GuestDataDAO extends MainDAO {
 		return guestdata;
 	}
 	
-	public List<GuestDataDTO> getGuestAttributes(ResultSet resultSet) {					
+	public List<GuestDataDTO> parseGuestAttributes(ResultSet resultSet) {					
 		List<GuestDataDTO> guestdataList=new ArrayList<>();
 		
 		try(resultSet){
@@ -162,14 +172,14 @@ public class GuestDataDAO extends MainDAO {
 				Timestamp birthdateTimestamp=Timestamp.valueOf(guestDataDTO.getBirthDate());
 				String nationality=guestDataDTO.getNationality().getName();
 				String telephone=guestDataDTO.getPhoneNumber();
-				int idBooking=guestDataDTO.getIdBooking();
+				int id=guestDataDTO.getId();
 				
 				statement.setString(1, name);
 				statement.setString(2, lastname);
 				statement.setTimestamp(3, birthdateTimestamp);
 				statement.setString(4, nationality);
 				statement.setString(5, telephone);
-				statement.setInt(6, idBooking);
+				statement.setInt(6, id);
 				statement.execute();
 				
 				int updateCount=statement.getUpdateCount();

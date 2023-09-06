@@ -3,11 +3,14 @@ package database.service;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
 import database.dao.BookingDataDAO;
 import database.dao.GuestDataDAO;
 import database.dto.BookingDataDTO;
@@ -79,7 +83,6 @@ public class BookingServiceTest {
 		
 		verify(bookingDataDAO).searchBookingList();
 		Assert.assertEquals(listBookingDataDTO,loadBookingList);
-		
 	}
 	
 	@Test
@@ -121,7 +124,6 @@ public class BookingServiceTest {
 		verify(bookingDataDAO).modify(bookingDataDTO1Modified);
 		
 		assertEquals(1,modifyBooking);
-	
 	}
 	
 	@Test
@@ -133,7 +135,6 @@ public class BookingServiceTest {
 		verify(bookingDataDAO).delete(3);
 		
 		assertEquals(1,deleteBooking);
-
 	}
 	@Test
 	public void testIncorrectTimeEntryDate() {	
@@ -200,9 +201,9 @@ public class BookingServiceTest {
 		Mockito.doReturn(listGuestDataDTO.get(1)).when(guestDataDAO).searchByIdGuest(2);
 		Mockito.doReturn(listGuestDataDTO.get(2)).when(guestDataDAO).searchByIdGuest(3);
 		
-		GuestDataDTO loadedGuest = bookingService.loadGuestListById(1);
-		GuestDataDTO loadedGuest1 = bookingService.loadGuestListById(2);
-		GuestDataDTO loadedGuest2 = bookingService.loadGuestListById(3);
+		GuestDataDTO loadedGuest = bookingService.loadGuestById(1);
+		GuestDataDTO loadedGuest1 = bookingService.loadGuestById(2);
+		GuestDataDTO loadedGuest2 = bookingService.loadGuestById(3);
 		
 		assertEquals(guestDataDTO, loadedGuest);
 		assertEquals(guestDataDTO1, loadedGuest1);
@@ -210,17 +211,14 @@ public class BookingServiceTest {
 	}
 
 	@Test
-	public void testModifiyGuest() {
+	public void testModifyGuest() {
+	Mockito.doReturn(1).when(guestDataDAO).modify(any(GuestDataDTO.class));
 
-		GuestDataDTO guestDataDTOModified=new GuestDataDTO(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),NationalityDTO.ARGENTIN,"2345777",1);
-		Mockito.doReturn(1).when(guestDataDAO).modify(guestDataDTOModified);
-		
-		int modifyGuest= bookingService.modifyGuest(guestDataDTOModified);
-		
-		verify(guestDataDAO).modify(guestDataDTOModified);
-		
-		assertEquals(1,modifyGuest);
-	
+	int modifyGuest= bookingService.modifyGuest("andrea","salinas",LocalDateTime.of(1990,12,12,10,30),NationalityDTO.ARGENTIN,"2345777",1);
+
+	verify(guestDataDAO).modify(any(GuestDataDTO.class));
+
+	assertEquals(1,modifyGuest);
 	}
 	
 	@Test
@@ -232,7 +230,6 @@ public class BookingServiceTest {
 		verify(guestDataDAO).delete(3);
 		
 		assertEquals(1,deleteGuest);
-
 	}
 	
 	@Test	
@@ -268,5 +265,32 @@ public class BookingServiceTest {
 		}
 	}
 	
+	@Test
+	public void testIdSearchLessThanZero() {	
+		try {
+			Random rand=new Random();	
+			int number=rand.nextInt(1000)-1000;
+			bookingService.loadGuestById(number);
+			System.out.println(number);
+			
+		}catch(RuntimeException e) {
+			Assert.assertNotNull(e);
+			String error="id can't be less than 0";
+			Assert.assertEquals(error,e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testIdDeleteLessThanZero() {	
+		try {
+			Random rand=new Random();	
+			int number=rand.nextInt(1000)-1000;
+			bookingService.deleteGuest(number);
+		}catch(RuntimeException e) {
+			Assert.assertNotNull(e);
+			String error="id can't be less than 0";
+			Assert.assertEquals(error,e.getMessage());
+		}
+	}	
 }
 

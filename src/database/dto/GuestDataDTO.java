@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class GuestDataDTO {
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private String lastName;
 	private LocalDateTime birthDate;
@@ -22,7 +22,7 @@ public class GuestDataDTO {
 		this.idBooking=idBooking;
 	}
 
-	public GuestDataDTO(int id, String name, String lastName, LocalDateTime birthDate, NationalityDTO nationality,
+	public GuestDataDTO(Integer id, String name, String lastName, LocalDateTime birthDate, NationalityDTO nationality,
 			String phoneNumber, Integer idBooking) {
 		this.id=id;
 		this.name=name;
@@ -33,22 +33,11 @@ public class GuestDataDTO {
 		this.idBooking=idBooking;
 	}
 
-	public GuestDataDTO(int id, String lastName, String name, LocalDateTime birthDate, NationalityDTO nationality,
-			String phoneNumber) {
-		this.id=id;
-		this.name=name;
-		this.lastName=lastName;
-		this.birthDate=birthDate;
-		this.nationality=nationality;
-		this.phoneNumber=phoneNumber;
-		
-	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

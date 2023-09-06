@@ -70,7 +70,8 @@ public class BookingService {
 		if(lastname==null) {
 			throw new IllegalArgumentException("Lastname was null");
 		}
-		if(birthDate.isAfter(LocalDateTime.now())) {
+		
+		if(birthDate!=null && birthDate.isAfter(LocalDateTime.now())) {
 			throw new IllegalArgumentException("Birthdate can't be before today");
 		}
 		
@@ -93,19 +94,39 @@ public class BookingService {
 	public int deleteBooking (int id){
 		return bookingDataDAO.delete(id);
 	}
+	
 	public List<GuestDataDTO> loadGuestList() {
 		return guestDataDAO.searchGuestList();
 	}
 	
-	public GuestDataDTO loadGuestListById(int idSearch) {
-		return guestDataDAO.searchByIdGuest(idSearch);
+	public GuestDataDTO loadGuestById(int idSearch) {
+		if(idSearch>0) {
+			return guestDataDAO.searchByIdGuest(idSearch);
+		}else {
+			throw new IllegalArgumentException("id can't be less than 0");
+		}
 	}
 
-	public int modifyGuest (GuestDataDTO guestDataDTO) {
+	public int modifyGuest (String name, String lastname,LocalDateTime birthDate, NationalityDTO nationality, String phoneNumber, Integer idBooking) {
+		if(name==null) {
+			throw new IllegalArgumentException("Name was null");
+		}
+		if(lastname==null) {
+			throw new IllegalArgumentException("Lastname was null");
+		}
+		if(birthDate.isAfter(LocalDateTime.now())) {
+			throw new IllegalArgumentException("Birthdate can't be before today");
+		}
+		
+		GuestDataDTO guestDataDTO=new GuestDataDTO(name,lastname,birthDate,nationality,phoneNumber,idBooking);	
 		return guestDataDAO.modify(guestDataDTO);
 	}
 	
 	public int deleteGuest (int id){
-		return guestDataDAO.delete(id);
+		if(id>0) {
+			return guestDataDAO.delete(id); 
+		}else {
+			throw new IllegalArgumentException("id can't be less than 0");
+		}
 	}
 }
