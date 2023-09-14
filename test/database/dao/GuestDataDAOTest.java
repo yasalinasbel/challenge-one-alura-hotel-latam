@@ -122,8 +122,12 @@ public class GuestDataDAOTest {
 		GuestDataDTO guest=new GuestDataDTO("Juliana","Salinas",null,NationalityDTO.ARGENTIN,"1234567",bookingSaved.getId());
 		guestDataDAO.save(guest);
 		
-		guestDataDAO.delete(guest.getId());	
-		bookingDataDAO.delete(bookingSaved.getId());
+		GuestDataDTO guestSearched = guestDataDAO.searchByIdGuest(guest.getIdBooking());
+		Assert.assertNotNull(guestSearched);
+		assertEqualsGuestDataDTO(guest,guestSearched);
+		
+		Assert.assertEquals(1,guestDataDAO.delete(guest.getId()));
+		Assert.assertEquals(1,bookingDataDAO.delete(bookingSaved.getId()));
 	}
 	
 	@Test
@@ -134,8 +138,12 @@ public class GuestDataDAOTest {
 		GuestDataDTO guest=new GuestDataDTO("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),null,"1234567",bookingSaved.getId());
 		guestDataDAO.save(guest);
 		
-		guestDataDAO.delete(guest.getId());	
-		bookingDataDAO.delete(bookingSaved.getId());
+		GuestDataDTO guestSearched = guestDataDAO.searchByIdGuest(guest.getIdBooking());
+		Assert.assertNotNull(guestSearched);
+		assertEqualsGuestDataDTO(guest,guestSearched);
+		
+		Assert.assertEquals(1,guestDataDAO.delete(guest.getId()));
+		Assert.assertEquals(1,bookingDataDAO.delete(bookingSaved.getId()));
 	}
 	
 	private void assertEqualsGuestDataDTO(GuestDataDTO guestToBeCompared, GuestDataDTO guestWhoComparesTo) {

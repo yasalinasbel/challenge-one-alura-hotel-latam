@@ -114,10 +114,12 @@ public class BookingService {
 		if(lastname==null) {
 			throw new IllegalArgumentException("Lastname was null");
 		}
-		if(birthDate.isAfter(LocalDateTime.now())) {
-			throw new IllegalArgumentException("Birthdate can't be before today");
+		if(birthDate!=null) {
+			if(birthDate.isAfter(LocalDateTime.now())) {
+				throw new IllegalArgumentException("Birthdate can't be after today");
+			}
 		}
-		
+
 		GuestDataDTO guestDataDTO=new GuestDataDTO(name,lastname,birthDate,nationality,phoneNumber,idBooking);	
 		return guestDataDAO.modify(guestDataDTO);
 	}

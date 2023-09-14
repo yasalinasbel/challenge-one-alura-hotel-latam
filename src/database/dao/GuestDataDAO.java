@@ -123,10 +123,20 @@ public class GuestDataDAO extends MainDAO {
 			while(resultSet.next()) {
 				int id = resultSet.getInt("id");
 				String name=resultSet.getString("name");
-				String lastname=resultSet.getString("lastname");			
-				LocalDateTime birthdate = resultSet.getTimestamp("birthdate").toLocalDateTime();
+				String lastname=resultSet.getString("lastname");	
+
+				Timestamp birthDateTimestamp=resultSet.getTimestamp("birthdate");
+				LocalDateTime birthdate=null;
+				if(birthDateTimestamp!=null) {
+					birthdate=birthDateTimestamp.toLocalDateTime();
+				}
+			
 				String nationalityMethod=resultSet.getString("nationality");
-				NationalityDTO nationality=NationalityDTO.valueOf(nationalityMethod);				
+				NationalityDTO nationality=null;	
+				if(nationalityMethod!=null) {
+					nationality=NationalityDTO.valueOf(nationalityMethod);
+				}
+					
 				String telephone=resultSet.getString("telephone");			
 				int idBooking = resultSet.getInt("id_booking");
 				
