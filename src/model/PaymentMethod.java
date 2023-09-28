@@ -2,8 +2,8 @@ package model;
 
 public enum PaymentMethod {
 
-	CREDIT ("CREDIT","Credito"),
-	DEBIT ("DEBIT","Debito"),
+	CREDIT ("CREDIT","Tarjeta de Credito"),
+	DEBIT ("DEBIT","Tarjeta de Debito"),
 	CASH ("CASH","Efectivo");
 	
 	private final String name;
@@ -18,6 +18,10 @@ public enum PaymentMethod {
 		return name;
 	}
 	
+	@Override
+	public String toString() {
+		return spanishName;
+	}
 }
 
 //public class PaymentMethodDTO {
