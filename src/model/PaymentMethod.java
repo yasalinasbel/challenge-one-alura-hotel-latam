@@ -2,8 +2,8 @@ package model;
 
 public enum PaymentMethod {
 
-	CREDIT ("CREDIT","Tarjeta de Credito"),
-	DEBIT ("DEBIT","Tarjeta de Debito"),
+	CREDIT ("CREDIT","Tarjeta de Cr\u00E9dito"),
+	DEBIT ("DEBIT","Tarjeta de D\u00E9bito"),
 	CASH ("CASH","Efectivo");
 	
 	private final String name;

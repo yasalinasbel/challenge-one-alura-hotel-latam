@@ -268,7 +268,6 @@ public class ReservasView extends JFrame {
 		panel.add(txtFechaEntrada);
 		
 		txtValor = new JTextField();
-		final AtomicInteger abc = new AtomicInteger(123);
 
 		txtFechaSalida = new JDateChooser();
 		txtFechaSalida.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/icon-reservas.png")));
@@ -293,16 +292,12 @@ public class ReservasView extends JFrame {
 					LocalDateTime entryDate=instantEntryDate.atZone(timeZone).toLocalDateTime();
 					LocalDateTime departureDate=instantDepartureDate.atZone(timeZone).toLocalDateTime();
 						
-					BigDecimal bookingPrice = bookingService.bookingPrice(entryDate,departureDate);
+					BigDecimal bookingPrice = bookingService.calculateBookingPrice(entryDate,departureDate);
 					
 					txtValor.setText(String.valueOf(bookingPrice));
 					
-				} else {
-					System.out.println("No podemos calcular el precio");
-				}
+				} 
 
-				
-				//txtValor.setText(String.valueOf(abc.getAndIncrement()));
 				//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
 			}
 		});
@@ -339,28 +334,22 @@ public class ReservasView extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
 					RegistroHuesped registro = new RegistroHuesped();
-					
+
 					Date entryDatePrevious = txtFechaEntrada.getDate();
 					Date departureDatePrevious = txtFechaSalida.getDate();
-
 					
-					if (entryDatePrevious != null && departureDatePrevious != null) {
-											
-						Instant instantEntryDate=entryDatePrevious.toInstant();
-						Instant instantDepartureDate=departureDatePrevious.toInstant();
-						
-						ZoneId timeZone=ZoneId.systemDefault();
-						
-						LocalDateTime entryDate=instantEntryDate.atZone(timeZone).toLocalDateTime();
-						LocalDateTime departureDate=instantDepartureDate.atZone(timeZone).toLocalDateTime();
-						BigDecimal price = new BigDecimal(txtValor.getText());
-						PaymentMethod paymentMethod=(PaymentMethod)txtFormaPago.getSelectedItem();
-						BookingData bookingData=new BookingData(entryDate,departureDate,price,paymentMethod);
-						Integer saveBooking = bookingService.saveBooking(bookingData);
-						System.out.println(saveBooking);
-						registro.setVisible(true);
-					}		
-	
+					Instant instantEntryDate=entryDatePrevious.toInstant();
+					Instant instantDepartureDate=departureDatePrevious.toInstant();
+					
+					ZoneId timeZone=ZoneId.systemDefault();
+					
+					LocalDateTime entryDate=instantEntryDate.atZone(timeZone).toLocalDateTime();
+					LocalDateTime departureDate=instantDepartureDate.atZone(timeZone).toLocalDateTime();
+					BigDecimal price = new BigDecimal(txtValor.getText());
+					PaymentMethod paymentMethod=(PaymentMethod)txtFormaPago.getSelectedItem();
+					BookingData bookingData=new BookingData(entryDate,departureDate,price,paymentMethod);
+					bookingService.saveBooking(bookingData);
+					registro.setVisible(true);
 					
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");

@@ -27,7 +27,7 @@ public class GuestDataDAOTest {
 		BigDecimal price = new BigDecimal("6000");
 		PaymentMethod paymentMethod = PaymentMethod.CASH;
 		
-		BookingData bookingData=new BookingData(entryDate,departureDate,paymentMethod,price);
+		BookingData bookingData=new BookingData(entryDate,departureDate,price,paymentMethod);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 
 		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"1234567",bookingSaved.getId());	
@@ -64,9 +64,9 @@ public class GuestDataDAOTest {
 	@Test
 	public void testSearchGuestList() {
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
-		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,11,30),PaymentMethod.CASH,new BigDecimal("6000.0"));
-		BookingData booking2=new BookingData(entryDate,LocalDateTime.of(2023,10,12,8,30),PaymentMethod.CASH,new BigDecimal("7000.0"));
-		BookingData booking3=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),PaymentMethod.CASH,new BigDecimal("8000.0"));
+		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,11,30),new BigDecimal("6000.0"),PaymentMethod.CASH);
+		BookingData booking2=new BookingData(entryDate,LocalDateTime.of(2023,10,12,8,30),new BigDecimal("7000.0"),PaymentMethod.CASH);
+		BookingData booking3=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),new BigDecimal("8000.0"),PaymentMethod.CASH);
 		
 		BookingData bookingSaved = bookingDataDAO.save(booking);
 		BookingData bookingSaved2 = bookingDataDAO.save(booking2);
@@ -99,7 +99,7 @@ public class GuestDataDAOTest {
 	
 	@Test
 	public void testGetGuestAttributes() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 		
 		try {
@@ -117,7 +117,7 @@ public class GuestDataDAOTest {
 	
 	@Test
 	public void testSaveBirthdateNull() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 		
 		GuestData guest=new GuestData("Juliana","Salinas",null,Nationality.ARGENTIN,"1234567",bookingSaved.getId());
@@ -133,7 +133,7 @@ public class GuestDataDAOTest {
 	
 	@Test
 	public void testSaveNationalityNull() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 		
 		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),null,"1234567",bookingSaved.getId());
