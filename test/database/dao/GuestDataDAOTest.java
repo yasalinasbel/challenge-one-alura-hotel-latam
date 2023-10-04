@@ -30,7 +30,7 @@ public class GuestDataDAOTest {
 		BookingData bookingData=new BookingData(entryDate,departureDate,price,paymentMethod);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 
-		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"1234567",bookingSaved.getId());	
+		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"1234567",bookingSaved.getId());	
 		
 		GuestData guestSaved = guestDataDAO.save(guest);
 		Assert.assertNotNull(guestSaved);
@@ -41,7 +41,7 @@ public class GuestDataDAOTest {
 		Assert.assertNotNull(guestSearched);
 		assertEqualsGuestData(guestSaved,guestSearched);
 		
-		GuestData guestToModify=new GuestData(guestSearched.getId(),"Juan","Cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTIN,"1234568",guestSaved.getIdBooking());
+		GuestData guestToModify=new GuestData(guestSearched.getId(),"Juan","Cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTINA,"1234568",guestSaved.getIdBooking());
 		
 		int guestModified = guestDataDAO.modify(guestToModify);
 		Assert.assertNotNull(guestSearched);
@@ -72,9 +72,9 @@ public class GuestDataDAOTest {
 		BookingData bookingSaved2 = bookingDataDAO.save(booking2);
 		BookingData bookingSaved3 = bookingDataDAO.save(booking3);
 		
-		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"1234567",bookingSaved.getId());	
-		GuestData guest2=new GuestData("Pablo","Salinas",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTIN,"1234569",bookingSaved2.getId());	
-		GuestData guest3=new GuestData("Sebastian","Cruz",LocalDateTime.of(1993,10,13,10,30),Nationality.ARGENTIN,"1234568",bookingSaved3.getId());	
+		GuestData guest=new GuestData("Juliana","Salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"1234567",bookingSaved.getId());	
+		GuestData guest2=new GuestData("Pablo","Salinas",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTINA,"1234569",bookingSaved2.getId());	
+		GuestData guest3=new GuestData("Sebastian","Cruz",LocalDateTime.of(1993,10,13,10,30),Nationality.ARGENTINA,"1234568",bookingSaved3.getId());	
 	
 		GuestData guestSaved = guestDataDAO.save(guest);
 		GuestData guestSaved2 = guestDataDAO.save(guest2);
@@ -103,7 +103,7 @@ public class GuestDataDAOTest {
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 		
 		try {
-			GuestData guest=new GuestData(null,null,LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"1234567",bookingSaved.getId());
+			GuestData guest=new GuestData(null,null,LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"1234567",bookingSaved.getId());
 			
 			guestDataDAO.save(guest);
 			Assert.fail("This test should have failed");
@@ -120,7 +120,7 @@ public class GuestDataDAOTest {
 		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		BookingData bookingSaved = bookingDataDAO.save(bookingData);
 		
-		GuestData guest=new GuestData("Juliana","Salinas",null,Nationality.ARGENTIN,"1234567",bookingSaved.getId());
+		GuestData guest=new GuestData("Juliana","Salinas",null,Nationality.ARGENTINA,"1234567",bookingSaved.getId());
 		guestDataDAO.save(guest);
 		
 		GuestData guestSearched = guestDataDAO.searchByIdGuest(guest.getIdBooking());
