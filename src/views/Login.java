@@ -125,7 +125,7 @@ public class Login extends JFrame {
 					 txtUsuario.setForeground(Color.black);
 			        }
 			        if (String.valueOf(txtContrasena.getPassword()).isEmpty()) {
-			        	txtContrasena.setText("********");
+			        	txtContrasena.setText("");
 			        	txtContrasena.setForeground(Color.gray);
 			        }
 			}
@@ -155,7 +155,7 @@ public class Login extends JFrame {
 		panel.add(separator_1);
 		
 		txtContrasena = new JPasswordField();
-		txtContrasena.setText("********");
+		txtContrasena.setText("");
 		txtContrasena.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -200,6 +200,7 @@ public class Login extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//click en boton entrar
 				executeLogin();
 			}
 		});

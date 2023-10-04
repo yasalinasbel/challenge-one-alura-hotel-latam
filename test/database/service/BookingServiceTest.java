@@ -47,7 +47,7 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testSaveBooking() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		bookingData.setId(123);
 		Mockito.doReturn(bookingData).when(bookingDataDAO).save(any(BookingData.class));
 		
@@ -68,9 +68,9 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testLoadBookingList() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
-		BookingData bookingData1=new BookingData(LocalDateTime.now(),LocalDateTime.of(2024,12,12,10,30),PaymentMethod.CASH,new BigDecimal("7000"));
-		BookingData bookingData2=new BookingData(LocalDateTime.now(),LocalDateTime.of(2025,12,12,10,30),PaymentMethod.CASH,new BigDecimal("8000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
+		BookingData bookingData1=new BookingData(LocalDateTime.now(),LocalDateTime.of(2024,12,12,10,30),new BigDecimal("7000"),PaymentMethod.CASH);
+		BookingData bookingData2=new BookingData(LocalDateTime.now(),LocalDateTime.of(2025,12,12,10,30),new BigDecimal("8000"),PaymentMethod.CASH);
 		
 		List<BookingData>listBookingData=new ArrayList<>();
 		
@@ -88,11 +88,11 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testLoadBookingById() {
-		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000"));
+		BookingData bookingData=new BookingData(LocalDateTime.now(),LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000"),PaymentMethod.CASH);
 		bookingData.setId(1);
-		BookingData bookingData1=new BookingData(LocalDateTime.now(),LocalDateTime.of(2024,12,12,10,30),PaymentMethod.CASH,new BigDecimal("7000"));
+		BookingData bookingData1=new BookingData(LocalDateTime.now(),LocalDateTime.of(2024,12,12,10,30),new BigDecimal("7000"),PaymentMethod.CASH);
 		bookingData1.setId(2);
-		BookingData bookingData2=new BookingData(LocalDateTime.now(),LocalDateTime.of(2025,12,12,10,30),PaymentMethod.CASH,new BigDecimal("8000"));
+		BookingData bookingData2=new BookingData(LocalDateTime.now(),LocalDateTime.of(2025,12,12,10,30),new BigDecimal("8000"),PaymentMethod.CASH);
 		bookingData2.setId(3);
 		
 		List<BookingData>listBookingData=new ArrayList<>();
@@ -140,7 +140,7 @@ public class BookingServiceTest {
 	@Test
 	public void testIncorrectTimeEntryDate() {	
 		try {
-			BookingData bookingData=new BookingData(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,31,11,30),PaymentMethod.CASH,new BigDecimal("6000"));
+			BookingData bookingData=new BookingData(LocalDateTime.of(2023,12,30,10,30),LocalDateTime.of(2023,12,31,11,30),new BigDecimal("6000"),PaymentMethod.CASH);
 			bookingData.setId(123);
 			Mockito.doReturn(bookingData).when(bookingDataDAO).save(any(BookingData.class));
 			

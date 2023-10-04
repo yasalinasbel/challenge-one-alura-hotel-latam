@@ -53,16 +53,15 @@ public class BookingService {
 		if (entryDate.isBefore(LocalDateTime.now())) {
 			throw new IllegalArgumentException("Entry date can't be before today");
 		}
-		
-		Duration duration=Duration.between(entryDate, departureDate);
-		BigDecimal days=new BigDecimal(duration.toDays());
-		
-		BookingData bookingDataWithPrice=new BookingData(entryDate,departureDate,paymentMethod,bookingPrice(days));
-		BookingData saveBooking = bookingDataDAO.save(bookingDataWithPrice);
+		BigDecimal price= calculateBookingPrice(entryDate,departureDate);
+		bookingData.setPrice(price);        
+		BookingData saveBooking = bookingDataDAO.save(bookingData);
 		return saveBooking.getId();
 	}
-
-	private  BigDecimal bookingPrice(BigDecimal days) {
+	
+	public BigDecimal calculateBookingPrice(LocalDateTime entryDate,LocalDateTime departureDate) {
+		Duration duration=Duration.between(entryDate, departureDate);
+		BigDecimal days=new BigDecimal(duration.toDays());
 		final BigDecimal pricePerNight=new BigDecimal(setting.getProperty("price_per_night"));
 		return  pricePerNight.multiply(days);
 	}

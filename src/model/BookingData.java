@@ -17,8 +17,8 @@ public class BookingData {
 		this.paymentMethod=paymentMethod;
 	}
 	
-	public BookingData(LocalDateTime entryDate, LocalDateTime departureDate, PaymentMethod paymentMethod,
-			BigDecimal bookingPrice) {
+	public BookingData(LocalDateTime entryDate, LocalDateTime departureDate, BigDecimal bookingPrice,
+			PaymentMethod paymentMethod) {
 		this.entryDate=entryDate;
 		this.departureDate=departureDate;
 		this.paymentMethod=paymentMethod;
@@ -69,6 +69,10 @@ public class BookingData {
 	
 	public BigDecimal getPrice() {
 		return price;
+	}
+	
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 	
 	/*@Override

@@ -22,7 +22,7 @@ public class BookingDataDAOTest {
 	public void testBookingCrudTest() throws SQLException {
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
 		
-		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,10,30),PaymentMethod.CASH,new BigDecimal("6000.0"));
+		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,10,30),new BigDecimal("6000.0"),PaymentMethod.CASH);
 		
 		BookingData bookingSaved = bookingDataDAO.save(booking);
 		Assert.assertNotNull(bookingSaved);
@@ -53,9 +53,9 @@ public class BookingDataDAOTest {
 	@Test
 	public void testSearchBookingList() {
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
-		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,11,30),PaymentMethod.CASH,new BigDecimal("6000.0"));
-		BookingData booking2=new BookingData(entryDate,LocalDateTime.of(2023,10,12,8,30),PaymentMethod.CASH,new BigDecimal("7000.0"));
-		BookingData booking3=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),PaymentMethod.CASH,new BigDecimal("8000.0"));
+		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,11,30),new BigDecimal("6000.0"),PaymentMethod.CASH);
+		BookingData booking2=new BookingData(entryDate,LocalDateTime.of(2023,10,12,8,30),new BigDecimal("7000.0"),PaymentMethod.CASH);
+		BookingData booking3=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),new BigDecimal("8000.0"),PaymentMethod.CASH);
 		
 		BookingData bookingSaved = bookingDataDAO.save(booking);
 		BookingData bookingSaved1 = bookingDataDAO.save(booking2);
@@ -77,7 +77,7 @@ public class BookingDataDAOTest {
 	@Test
 	public void testGetBookingAttributes() {
 		try {
-			BookingData booking=new BookingData(null,null,null,new BigDecimal("6000.0"));
+			BookingData booking=new BookingData(null,null,new BigDecimal("6000.0"),null);
 			
 			bookingDataDAO.save(booking);
 			Assert.fail("This test should have failed");
