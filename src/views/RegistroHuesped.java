@@ -29,7 +29,6 @@ import com.toedter.calendar.JDateChooser;
 
 import model.GuestData;
 import model.Nationality;
-import model.PaymentMethod;
 import service.BookingService;
 
 @SuppressWarnings("serial")
