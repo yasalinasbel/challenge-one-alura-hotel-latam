@@ -58,7 +58,7 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testSaveGuest() {
-		GuestData guestData=new GuestData("Gabriel","Salinas",LocalDateTime.now(),Nationality.ARGENTIN,"2345777",1);
+		GuestData guestData=new GuestData("Gabriel","Salinas",LocalDateTime.now(),Nationality.ARGENTINA,"2345777",1);
 		Mockito.doReturn(guestData).when(guestDataDAO).save(any(GuestData.class));
 		
 		bookingService.saveGuest(guestData);
@@ -167,9 +167,9 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testLoadGuestList() {
-		GuestData guestData=new GuestData(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
-		GuestData guestData2=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTIN,"2345778",13);
-		GuestData guestData3=new GuestData(4,"harry","cruz",LocalDateTime.of(2019,12,12,10,30),Nationality.ARGENTIN,"2345779",12);
+		GuestData guestData=new GuestData(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
+		GuestData guestData2=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTINA,"2345778",13);
+		GuestData guestData3=new GuestData(4,"harry","cruz",LocalDateTime.of(2019,12,12,10,30),Nationality.ARGENTINA,"2345779",12);
 
 		List<GuestData>listGuestData=new ArrayList<>();
 		
@@ -187,11 +187,11 @@ public class BookingServiceTest {
 	
 	@Test
 	public void testLoadGuestById() {
-		GuestData guestData=new GuestData(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
+		GuestData guestData=new GuestData(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 		guestData.setId(1);
-		GuestData guestData1=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTIN,"2345778",13);
+		GuestData guestData1=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTINA,"2345778",13);
 		guestData.setId(2);
-		GuestData guestData2=new GuestData(4,"harry","cruz",LocalDateTime.of(2019,12,12,10,30),Nationality.ARGENTIN,"2345779",12);
+		GuestData guestData2=new GuestData(4,"harry","cruz",LocalDateTime.of(2019,12,12,10,30),Nationality.ARGENTINA,"2345779",12);
 		guestData.setId(3);
 		
 		List<GuestData>listGuestData=new ArrayList<>();
@@ -216,7 +216,7 @@ public class BookingServiceTest {
 	@Test
 	public void testModifyGuest() {
 	Mockito.doReturn(1).when(guestDataDAO).modify(any(GuestData.class));
-	GuestData guestData=new GuestData("andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
+	GuestData guestData=new GuestData("andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 
 	int modifyGuest= bookingService.modifyGuest(guestData);
 
@@ -239,7 +239,7 @@ public class BookingServiceTest {
 	@Test	
 	public void testNullNameGuest() {	
 		try {
-			GuestData guestData=new GuestData(null,"salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
+			GuestData guestData=new GuestData(null,"salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 			bookingService.saveGuest(guestData);
 		}catch(RuntimeException e) {
 			Assert.assertNotNull(e);
@@ -251,7 +251,7 @@ public class BookingServiceTest {
 	@Test
 	public void testNullLastNameGuest() {	
 		try {
-			GuestData guestData=new GuestData ("andrea",null,LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
+			GuestData guestData=new GuestData ("andrea",null,LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 			bookingService.saveGuest(guestData);
 		}catch(RuntimeException e) {
 			Assert.assertNotNull(e);
@@ -263,7 +263,7 @@ public class BookingServiceTest {
 	@Test
 	public void testBirthdateIncorrect() {	
 		try {
-			GuestData guestData=new GuestData ("andrea","salinas",LocalDateTime.of(2023,12,12,10,30),Nationality.ARGENTIN,"2345777",1);
+			GuestData guestData=new GuestData ("andrea","salinas",LocalDateTime.of(2023,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 			bookingService.saveGuest(guestData);
 		}catch(RuntimeException e) {
 			Assert.assertNotNull(e);

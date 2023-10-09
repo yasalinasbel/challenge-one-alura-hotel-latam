@@ -348,7 +348,8 @@ public class ReservasView extends JFrame {
 					BigDecimal price = new BigDecimal(txtValor.getText());
 					PaymentMethod paymentMethod=(PaymentMethod)txtFormaPago.getSelectedItem();
 					BookingData bookingData=new BookingData(entryDate,departureDate,price,paymentMethod);
-					bookingService.saveBooking(bookingData);
+					Integer idBooking= bookingService.saveBooking(bookingData);
+					registro.setTxtNreserva(idBooking);
 					registro.setVisible(true);
 					
 				} else {
