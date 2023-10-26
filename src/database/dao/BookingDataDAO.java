@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.BookingData;
 import model.PaymentMethod;
 
@@ -19,12 +18,13 @@ public class BookingDataDAO extends MainDAO {
 	private static final String SAVE_IN_BOOKING="INSERT INTO booking(entry_date, departure_date, payment_method, price)"+
 			"VALUES(?,?,?,?)";
 	private static final String SELECT_BOOKING_TABLE = "SELECT id, entry_date, departure_date, price, payment_method FROM booking";
-	
-	private static final String SELECT_BOOKING_TABLE_BY_ID="SELECT id, entry_date, departure_date, price, payment_method FROM booking WHERE id=?";
-	
+		
 	private static final String DELETE_BOOKING_BY_ID="DELETE FROM booking WHERE id=?";
 	
 	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?, departure_date=?, price=?, payment_method=? WHERE id=?";
+	
+	private static final String SELECT_BOOKING_TABLE_BY_ID_ANY_REQUEST="SELECT * FROM booking WHERE TRIM(id) LIKE ? OR TRIM(entry_date) LIKE ? OR TRIM(departure_date) LIKE ? OR TRIM(price) LIKE ? OR TRIM(payment_method) LIKE ?";
+	
 	
 	public BookingData save(BookingData bookingData) {
 		Connection con= super.getConnection();
@@ -95,20 +95,27 @@ public class BookingDataDAO extends MainDAO {
 		return bookingdataList;
 	}
 	
-	public BookingData searchByIdBooking(int idSearch) {
+	public List<BookingData> searchByAnyRequestBooking(String anyRequest) {
 		Connection con= super.getConnection();
-		BookingData bookingdata=null;
+		List<BookingData> bookingdata=null;
 		
 		try {
-			final PreparedStatement statement=con.prepareStatement(SELECT_BOOKING_TABLE_BY_ID);
+			final PreparedStatement statement=con.prepareStatement(SELECT_BOOKING_TABLE_BY_ID_ANY_REQUEST);
 			
 			try(statement){
-				statement.setInt(1, idSearch);
+				statement.setString(1, "%" + anyRequest + "%");
+				statement.setString(2,"%" + anyRequest + "%");
+				statement.setString(3, "%" + anyRequest + "%");
+				statement.setString(4, "%" + anyRequest + "%");
+				statement.setString(5,"%" + anyRequest + "%");
+
 				statement.execute();
 				final ResultSet resultSet=statement.getResultSet();
 				List<BookingData> bookingdataList = getBookingAttributes(resultSet);
 				if (!bookingdataList.isEmpty()) {
-					bookingdata = bookingdataList.get(0);
+					bookingdata = bookingdataList;
+				}else {
+					bookingdata=new ArrayList<>();
 				}
 			}	
 		}catch(SQLException e) {
@@ -116,7 +123,7 @@ public class BookingDataDAO extends MainDAO {
 		}
 		return bookingdata;
 	}
-					
+	
 	public List<BookingData> getBookingAttributes(ResultSet resultSet) {					
 		List<BookingData> bookingdataList=new ArrayList<>();
 		

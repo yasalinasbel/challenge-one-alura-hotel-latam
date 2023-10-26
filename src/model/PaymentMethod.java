@@ -18,10 +18,22 @@ public enum PaymentMethod {
 		return name;
 	}
 	
+	public static PaymentMethod conversionSpanishToEglish(String spanishname) {
+		for (PaymentMethod method:PaymentMethod.values()) {
+			if(method.spanishName.equalsIgnoreCase(spanishname)) {
+		
+				return method;
+			}
+		}
+        throw new IllegalArgumentException("No PaymentMethod found");
+	}
+	
 	@Override
 	public String toString() {
 		return spanishName;
 	}
+	
+	
 }
 
 //public class PaymentMethodDTO {

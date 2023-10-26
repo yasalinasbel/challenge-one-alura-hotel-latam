@@ -2,9 +2,9 @@ package model;
 
 public enum Nationality {
 
-	AFGHANISTAN ("AFGAN", "afgano-afgana"),
-	GERMANY ("GERMAN", "alem\u00e1n-alemana"),
-	ARGENTINA ("ARGENTIN", "argentino-argentina"),
+	AFGHANISTAN ("AFGHANISTAN", "afgano-afgana"),
+	GERMANY ("GERMANY", "alem\u00e1n-alemana"),
+	ARGENTINA ("ARGENTINA", "argentino-argentina"),
 	ARABIA ("ARABIA", "\u00e1rabe-\u00e1rabe"),
 	AUSTRALIA ("AUSTRALIA", "australiano-australiana"),
 	BELGIUM ("BELGIUM", "belga-belga"),
@@ -16,22 +16,22 @@ public enum Nationality {
 	CHINA ("CHINA", "chino-china"),
 	COLOMBIA ("COLOMBIA", "colombiano-colombiana"),
 	KOREA ("KOREA", "coreano-coreana"),
-	COSTARICA ("COSTA RICA", "costarricense-costarricense"),
+	COSTARICA ("COSTARICA", "costarricense-costarricense"),
 	CUBA ("CUBA", "cubano-cubana"),
 	DENMARK ("DENMARK", "dan\u00e9s-danesa"),
-	DOMINICANREPUBLIC ("DOMINICAN REPUBLIC", "dominicano-dominicana"),
+	DOMINICANREPUBLIC ("DOMINICANREPUBLIC", "dominicano-dominicana"),
 	ECUADOR ("ECUADOR", "ecuatoriano-ecuatoriana"),
 	EGYPT ("EGYPT", "egipcio-egipcia"),
-	ELSALVADOR ("EL SALVADOR", "salvadore\u00f1o-salvadore\u00f1a"),
+	ELSALVADOR ("ELSALVADOR", "salvadore\u00f1o-salvadore\u00f1a"),
 	SCOTLAND ("SCOTLAND", "escoc\u00e9s-escocesa"),
 	SPAIN ("SPAIN", "espa\u00f1ol-espa\u00f1ola"),
-	UNITEDSTATES ("UNITED STATES", "estadounidense-estadounidense"),
+	UNITEDSTATES ("UNITEDSTATES", "estadounidense-estadounidense"),
 	ESTONIA ("ESTONIA", "estonio-estonia"),
 	ETHIOPIA ("ETHIOPIA", "et\u00edope-et\u00edope"),
 	PHILIPPINES ("PHILIPPINES", "filipino-filipina"),
 	FINLAND ("FINLAND", "finland\u00e9s-finlandesa"),
 	FRANCE ("FRANCE", "franc\u00e9s-francesa"),
-	UNITEDKINGDOM ("UNITED KINGDOM", "brit\u00e1nico-brit\u00e1nica"),
+	UNITEDKINGDOM ("UNITEDKINGDOM", "brit\u00e1nico-brit\u00e1nica"),
 	GREECE ("GREECE", "griego-griega"),
 	GUATEMALA ("GUATEMALA", "guatemalteco-guatemalteca"),
 	HAITI ("HAITI", "haitiano-haitiana"),
@@ -53,7 +53,7 @@ public enum Nationality {
 	MEXICO ("MEXICO", "mexicano-mexicana"),
 	NICARAGUA ("NICARAGUA", "nicarag\u00fcense-nicarag\u00fcense"),
 	NORWAY ("NORWAY", "noruego-noruega"),
-	NEWZEALAND ("NEW ZEALAND", "neozeland\u00e9s-neozelandesa"),
+	NEWZEALAND ("NEWZEALAND", "neozeland\u00e9s-neozelandesa"),
 	PANAMA ("PANAMA", "paname\u00f1o-paname\u00f1a"),
 	PARAGUAY ("PARAGUAY", "paraguayo-paraguaya"),
 	PERU ("PERU", "peruano-peruana"),
@@ -85,8 +85,20 @@ public enum Nationality {
 		return name;
 	}
 	
+	public static Nationality conversionSpanishToEglish(String spanishNationality) {
+		for (Nationality method:Nationality.values()) {
+			if(method.spanishNationality.equalsIgnoreCase(spanishNationality)) {
+		
+				return method;
+			}
+		}
+        throw new IllegalArgumentException("No Nationality found");
+	}
+	
 	@Override
 	public String toString() {
 		return spanishNationality;
 	}
+
+
 }

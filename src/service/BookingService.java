@@ -89,10 +89,6 @@ public class BookingService {
 	public List<BookingData> loadBookingList() {
 		return bookingDataDAO.searchBookingList();
 	}
-	
-	public BookingData loadBookingListById(int idSearch) {
-		return bookingDataDAO.searchByIdBooking(idSearch);
-	}
 
 	public int modifyBooking (BookingData bookingData) {
 		return bookingDataDAO.modify(bookingData);
@@ -102,18 +98,20 @@ public class BookingService {
 		return bookingDataDAO.delete(id);
 	}
 	
+	public List<BookingData> loadBookingByAnyRequest(String anyRequest) {
+		return bookingDataDAO.searchByAnyRequestBooking(anyRequest);
+	
+	}
+	
 	public List<GuestData> loadGuestList() {
 		return guestDataDAO.searchGuestList();
 	}
 	
-	public GuestData loadGuestById(int idSearch) {
-		if(idSearch>0) {
-			return guestDataDAO.searchByIdGuest(idSearch);
-		}else {
-			throw new IllegalArgumentException("id can't be less than 0");
-		}
+	public List<GuestData> loadGuestByAnyRequest(String anyRequest) {
+		return guestDataDAO.searchByAnyRequestGuest(anyRequest);
+	
 	}
-
+	
 	public int modifyGuest (GuestData guestData) {
 
 		String name=guestData.getName();
