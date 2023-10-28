@@ -23,8 +23,7 @@ public class BookingDataDAO extends MainDAO {
 	
 	private static final String MODIFY_BOOKING="UPDATE booking SET entry_date=?, departure_date=?, price=?, payment_method=? WHERE id=?";
 	
-	private static final String SELECT_BOOKING_TABLE_BY_ID_ANY_REQUEST="SELECT * FROM booking WHERE TRIM(id) LIKE ? OR TRIM(entry_date) LIKE ? OR TRIM(departure_date) LIKE ? OR TRIM(price) LIKE ? OR TRIM(payment_method) LIKE ?";
-	
+	private static final String SELECT_BOOKING_TABLE_BY_ID_ANY_REQUEST="SELECT id, entry_date, departure_date, price, payment_method FROM booking WHERE TRIM(id) LIKE ? OR TRIM(entry_date) LIKE ? OR TRIM(departure_date) LIKE ? OR TRIM(price) LIKE ? OR TRIM(payment_method) LIKE ?";
 	
 	public BookingData save(BookingData bookingData) {
 		Connection con= super.getConnection();

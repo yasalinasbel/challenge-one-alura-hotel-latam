@@ -19,10 +19,10 @@ public enum PaymentMethod {
 	}
 	
 	public static PaymentMethod conversionSpanishToEglish(String spanishname) {
-		for (PaymentMethod method:PaymentMethod.values()) {
-			if(method.spanishName.equalsIgnoreCase(spanishname)) {
+		for (PaymentMethod paymentMethod:PaymentMethod.values()) {
+			if(paymentMethod.spanishName.equalsIgnoreCase(spanishname)) {
 		
-				return method;
+				return paymentMethod;
 			}
 		}
         throw new IllegalArgumentException("No PaymentMethod found");

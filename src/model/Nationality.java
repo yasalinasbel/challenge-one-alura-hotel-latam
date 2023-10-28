@@ -86,10 +86,10 @@ public enum Nationality {
 	}
 	
 	public static Nationality conversionSpanishToEglish(String spanishNationality) {
-		for (Nationality method:Nationality.values()) {
-			if(method.spanishNationality.equalsIgnoreCase(spanishNationality)) {
+		for (Nationality nationality:Nationality.values()) {
+			if(nationality.spanishNationality.equalsIgnoreCase(spanishNationality)) {
 		
-				return method;
+				return nationality;
 			}
 		}
         throw new IllegalArgumentException("No Nationality found");

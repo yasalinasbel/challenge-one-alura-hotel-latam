@@ -22,7 +22,7 @@ public class GuestDataDAO extends MainDAO {
 	
 	private static final String MODIFY_GUEST="UPDATE guest SET name=?, lastname=?, birthdate=?, nationality=?, telephone=? WHERE id=?";
 	
-	private static final String SELECT_GUEST_TABLE_BY_ID_ANY_REQUEST="SELECT * FROM guest WHERE TRIM(id_booking) LIKE ? OR TRIM(id) LIKE ? OR TRIM(name) LIKE ? OR TRIM(lastname) LIKE ? OR TRIM(birthdate) LIKE ? OR TRIM(nationality) LIKE ? OR TRIM(telephone) LIKE ?";
+	private static final String SELECT_GUEST_TABLE_BY_ID_ANY_REQUEST="SELECT id, name, lastname, birthdate, nationality, telephone, id_booking FROM guest WHERE TRIM(id_booking) LIKE ? OR TRIM(id) LIKE ? OR TRIM(name) LIKE ? OR TRIM(lastname) LIKE ? OR TRIM(birthdate) LIKE ? OR TRIM(nationality) LIKE ? OR TRIM(telephone) LIKE ?";
 
 	public GuestData save(GuestData guestData) {
 		Connection con= super.getConnection();	

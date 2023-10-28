@@ -33,9 +33,6 @@ public class GuestData {
 		this.idBooking=idBooking;
 	}
 
-	public GuestData() {
-	}
-
 	public Integer getId() {
 		return id;
 	}

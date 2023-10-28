@@ -35,9 +35,6 @@ public class BookingData {
 
 	}
 
-	public BookingData() {
-	}
-
 	public LocalDateTime getEntryDate() {
 		return entryDate;
 	}
