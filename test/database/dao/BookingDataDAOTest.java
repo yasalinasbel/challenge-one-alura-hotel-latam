@@ -3,7 +3,9 @@ package database.dao;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +30,7 @@ public class BookingDataDAOTest {
 		Assert.assertNotNull(bookingSaved);
 		Assert.assertNotNull(bookingSaved.getId());
 		
-		BookingData bookingSearched = bookingDataDAO.searchByIdBooking(bookingSaved.getId());
+		BookingData bookingSearched = (bookingDataDAO.searchByAnyRequestBooking(Integer.toString(bookingSaved.getId()))).get(0);
 		Assert.assertNotNull(bookingSearched);
 		assertEqualsBookingData(bookingSaved,bookingSearched);
 		
@@ -38,18 +40,59 @@ public class BookingDataDAOTest {
 		Assert.assertNotNull(bookingSearched);
 		Assert.assertTrue(1 == bookingModified);
 		
-		BookingData bookingSearchedModified = bookingDataDAO.searchByIdBooking(bookingToModify.getId());
+		BookingData bookingSearchedModified = (bookingDataDAO.searchByAnyRequestBooking(Integer.toString(bookingToModify.getId()))).get(0);
 		Assert.assertNotNull(bookingSearchedModified);
 		assertEqualsBookingData(bookingToModify,bookingSearchedModified);
 		
 		int deletedRecords = bookingDataDAO.delete(bookingToModify.getId());
 		Assert.assertTrue(1 == deletedRecords);
 		
-		BookingData bookingDeleted = bookingDataDAO.searchByIdBooking(bookingToModify.getId());
-		Assert.assertNull(bookingDeleted);
+		List<BookingData> bookingDeleted = (bookingDataDAO.searchByAnyRequestBooking(Integer.toString(bookingToModify.getId())));
+		Assert.assertNotNull(bookingSearchedModified);
+		Assert.assertNotNull(bookingDeleted);
+		Assert.assertEquals(new ArrayList<>(),bookingDeleted);
 		
 	}
-
+	@Test
+	public void testSearchAnyRequestBookingList() {
+		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
+		BookingData booking=new BookingData(entryDate,LocalDateTime.of(2023,12,12,11,30),new BigDecimal("6000.0"),PaymentMethod.CASH);
+		BookingData booking2=new BookingData(entryDate,LocalDateTime.of(2023,10,12,8,30),new BigDecimal("7000.0"),PaymentMethod.DEBIT);
+		BookingData booking3=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),new BigDecimal("8000.0"),PaymentMethod.CASH);
+		BookingData booking4=new BookingData(entryDate,LocalDateTime.of(2023,8,12,07,30),new BigDecimal("8000.0"),PaymentMethod.CASH);
+		
+		BookingData bookingSaved = bookingDataDAO.save(booking);
+		BookingData bookingSaved1 = bookingDataDAO.save(booking2);
+		BookingData bookingSaved2 = bookingDataDAO.save(booking3);
+		BookingData bookingSaved3 = bookingDataDAO.save(booking4);
+		
+		List<BookingData> searchBookingList = bookingDataDAO.searchByAnyRequestBooking("CASH");
+		assertEqualsBookingData(bookingSaved,searchBookingList.get(0));
+		assertEqualsBookingData(bookingSaved2,searchBookingList.get(1));
+		assertEqualsBookingData(bookingSaved3,searchBookingList.get(2));
+		Assert.assertEquals(3,searchBookingList.size());
+		
+		BookingData bookingToModify=new BookingData(searchBookingList.get(0).getId(),LocalDateTime.of(2023,11,10,10,30), LocalDateTime.of(2024,01,02,10,30), new BigDecimal("30000.0"), PaymentMethod.DEBIT);
+		int bookingModified = bookingDataDAO.modify(bookingToModify);
+		Assert.assertNotNull(searchBookingList.get(0));
+		Assert.assertTrue(1 == bookingModified);
+		
+		List<BookingData> searchBookingListModified = bookingDataDAO.searchByAnyRequestBooking("CASH");
+		assertEqualsBookingData(bookingSaved2,searchBookingListModified.get(0));
+		assertEqualsBookingData(bookingSaved3,searchBookingListModified.get(1));
+		Assert.assertEquals(2,searchBookingListModified.size());
+		
+		int deletedRecord1 = bookingDataDAO.delete(booking.getId());
+		Assert.assertTrue(1 == deletedRecord1);
+		int deletedRecord2 = bookingDataDAO.delete(booking2.getId());
+		Assert.assertTrue(1 == deletedRecord2);
+		int deletedRecord3 = bookingDataDAO.delete(booking3.getId());
+		Assert.assertTrue(1 == deletedRecord3);
+		int deletedRecord4 = bookingDataDAO.delete(booking4.getId());
+		Assert.assertTrue(1 == deletedRecord4);
+		
+	}
+	
 	@Test
 	public void testSearchBookingList() {
 		LocalDateTime entryDate=LocalDateTime.now().withNano(0);
@@ -73,7 +116,7 @@ public class BookingDataDAOTest {
 		Assert.assertTrue(1 == deletedRecords2);
 		Assert.assertTrue(1 == deletedRecords);
 	}	
-	
+
 	@Test
 	public void testGetBookingAttributes() {
 		try {
@@ -88,7 +131,7 @@ public class BookingDataDAOTest {
 
 		}
 	}
-	
+
 	private void assertEqualsBookingData(BookingData bookingToBeCompared, BookingData bookingWhoComparesTo) {
 		Assert.assertEquals(bookingToBeCompared.getId(), bookingWhoComparesTo.getId());
 		Assert.assertEquals(bookingToBeCompared.getEntryDate(), bookingWhoComparesTo.getEntryDate());
@@ -97,4 +140,6 @@ public class BookingDataDAOTest {
 		Assert.assertEquals(bookingToBeCompared.getPaymentMethod(), bookingWhoComparesTo.getPaymentMethod());
 	}
 
+	
+	
 }

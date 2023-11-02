@@ -101,17 +101,12 @@ public class BookingServiceTest {
 		listBookingData.add(bookingData1);
 		listBookingData.add(bookingData2);
 		
-		Mockito.doReturn(listBookingData.get(0)).when(bookingDataDAO).searchByIdBooking(1);
-		Mockito.doReturn(listBookingData.get(1)).when(bookingDataDAO).searchByIdBooking(2);
-		Mockito.doReturn(listBookingData.get(2)).when(bookingDataDAO).searchByIdBooking(3);
 		
-		BookingData loadedBooking = bookingService.loadBookingListById(1);
-		BookingData loadedBooking1 = bookingService.loadBookingListById(2);
-		BookingData loadedBooking2 = bookingService.loadBookingListById(3);
+		Mockito.doReturn(listBookingData).when(bookingDataDAO).searchByAnyRequestBooking("CASH");
 		
-		assertEquals(bookingData, loadedBooking);
-		assertEquals(bookingData1, loadedBooking1);
-		assertEquals(bookingData2, loadedBooking2);
+		List<BookingData> loadedBooking = bookingService.loadBookingByAnyRequest("CASH");
+		
+		assertEquals(listBookingData, loadedBooking);
 	}
 	
 	@Test
@@ -189,7 +184,7 @@ public class BookingServiceTest {
 	public void testLoadGuestById() {
 		GuestData guestData=new GuestData(2,"andrea","salinas",LocalDateTime.of(1990,12,12,10,30),Nationality.ARGENTINA,"2345777",1);
 		guestData.setId(1);
-		GuestData guestData1=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.ARGENTINA,"2345778",13);
+		GuestData guestData1=new GuestData(3,"juan","cruz",LocalDateTime.of(1993,12,12,10,30),Nationality.AFGHANISTAN,"2345778",13);
 		guestData.setId(2);
 		GuestData guestData2=new GuestData(4,"harry","cruz",LocalDateTime.of(2019,12,12,10,30),Nationality.ARGENTINA,"2345779",12);
 		guestData.setId(3);
@@ -200,17 +195,12 @@ public class BookingServiceTest {
 		listGuestData.add(guestData1);
 		listGuestData.add(guestData2);
 		
-		Mockito.doReturn(listGuestData.get(0)).when(guestDataDAO).searchByIdGuest(1);
-		Mockito.doReturn(listGuestData.get(1)).when(guestDataDAO).searchByIdGuest(2);
-		Mockito.doReturn(listGuestData.get(2)).when(guestDataDAO).searchByIdGuest(3);
+		Mockito.doReturn(listGuestData).when(guestDataDAO).searchByAnyRequestGuest("ARGENTINA");
 		
-		GuestData loadedGuest = bookingService.loadGuestById(1);
-		GuestData loadedGuest1 = bookingService.loadGuestById(2);
-		GuestData loadedGuest2 = bookingService.loadGuestById(3);
+		List<GuestData> loadedGuest = bookingService.loadGuestByAnyRequest("ARGENTINA");
 		
-		assertEquals(guestData, loadedGuest);
-		assertEquals(guestData1, loadedGuest1);
-		assertEquals(guestData2, loadedGuest2);
+		assertEquals(listGuestData, loadedGuest);
+
 	}
 
 	@Test
@@ -277,7 +267,7 @@ public class BookingServiceTest {
 		try {
 			Random rand=new Random();	
 			int number=rand.nextInt(1000)-1000;
-			bookingService.loadGuestById(number);
+			bookingService.loadBookingByAnyRequest(Integer.toString(number));
 			System.out.println(number);
 			
 		}catch(RuntimeException e) {

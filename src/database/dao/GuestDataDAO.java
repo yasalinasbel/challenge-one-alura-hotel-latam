@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.GuestData;
 import model.Nationality;
 
@@ -18,13 +17,13 @@ public class GuestDataDAO extends MainDAO {
 	private static final String SAVE_IN_GUEST="INSERT INTO guest(name, lastname, birthdate, nationality, telephone, id_booking)"+
 			"VALUES(?,?,?,?,?,?)";
 	private static final String SELECT_GUEST_TABLE = "SELECT id, name, lastname, birthdate, nationality, telephone, id_booking FROM guest";
-	
-	private static final String SELECT_GUEST_TABLE_BY_ID="SELECT id, name, lastname, birthdate, nationality, telephone, id_booking FROM guest WHERE id_booking=?";
-	
+		
 	private static final String DELETE_GUEST_BY_ID="DELETE FROM guest WHERE id=?";
 	
 	private static final String MODIFY_GUEST="UPDATE guest SET name=?, lastname=?, birthdate=?, nationality=?, telephone=? WHERE id=?";
 	
+	private static final String SELECT_GUEST_TABLE_BY_ID_ANY_REQUEST="SELECT id, name, lastname, birthdate, nationality, telephone, id_booking FROM guest WHERE TRIM(id_booking) LIKE ? OR TRIM(id) LIKE ? OR TRIM(name) LIKE ? OR TRIM(lastname) LIKE ? OR TRIM(birthdate) LIKE ? OR TRIM(nationality) LIKE ? OR TRIM(telephone) LIKE ?";
+
 	public GuestData save(GuestData guestData) {
 		Connection con= super.getConnection();	
 		
@@ -95,20 +94,30 @@ public class GuestDataDAO extends MainDAO {
 		return guestdataList;
 	}
 	
-	public GuestData searchByIdGuest(int idSearch) {
+	public List<GuestData> searchByAnyRequestGuest(String anyRequest) {
 		Connection con= super.getConnection();
-		GuestData guestdata=null;
+		List<GuestData> guestdata=null;
 		
 		try {
-			final PreparedStatement statement=con.prepareStatement(SELECT_GUEST_TABLE_BY_ID);
+			final PreparedStatement statement=con.prepareStatement(SELECT_GUEST_TABLE_BY_ID_ANY_REQUEST);
 			
 			try(statement){
-				statement.setInt(1, idSearch);
+				statement.setString(1, "%" + anyRequest + "%");
+				statement.setString(2,"%" + anyRequest + "%");
+				statement.setString(3, "%" + anyRequest + "%");
+				statement.setString(4, "%" + anyRequest + "%");
+				statement.setString(5,"%" + anyRequest + "%");
+				statement.setString(6,"%" + anyRequest + "%");
+				statement.setString(7,"%" + anyRequest + "%");
+
+
 				statement.execute();
 				final ResultSet resultSet=statement.getResultSet();
 				List<GuestData> guestdataList = parseGuestAttributes(resultSet);
 				if (!guestdataList.isEmpty()) {
-					guestdata = guestdataList.get(0);
+					guestdata = guestdataList;
+				}else {
+					guestdata=new ArrayList<>();
 				}
 			}	
 		}catch(SQLException e) {
@@ -116,7 +125,6 @@ public class GuestDataDAO extends MainDAO {
 		}
 		return guestdata;
 	}
-	
 	public List<GuestData> parseGuestAttributes(ResultSet resultSet) {					
 		List<GuestData> guestdataList=new ArrayList<>();
 		
